@@ -1,0 +1,19 @@
+<div class="login-box">
+    <h2>Iniciar Sesión</h2>
+    <form *ngIf="!loading" method="POST">
+        <div class="user-box">
+            <input type="text" [(ngModel)]="userName" id="username" name = "email" size="25" placeholder="Nombre de Usuario"> <br><br>
+        </div>
+        <div class="user-box">
+            <input type="password" [(ngModel)]="password" id="password" name = "password" size="25" placeholder="Contraseña"> <br><br>
+            <span class="toggle-password" onclick="togglePasswordVisibility()">
+                <i class="fa fa-eye"></i>
+            </span>
+        </div>
+        <button class="button" type="submit" id="button" (click)="login()">Ingresar</button>
+        <p class="signup-text">¿Aun no tienes una cuenta? <a routerLink="/sign">Registrate</a></p>
+        <p class="signup-text">¿Olvidaste tu contraseña? <a routerLink="/requestPwd">Recupera tu contraseña</a></p>
+    </form>
+    <app-spinner *ngIf="loading"></app-spinner>
+</div>
+

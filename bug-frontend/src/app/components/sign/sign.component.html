@@ -1,0 +1,26 @@
+<div class="registration-box">
+    <h2>Registrate</h2>
+    <form *ngIf="!loading" method="POST">
+        <div class="user-box">
+            <input type="text" [(ngModel)]="userName" name="username" id="username" size="25" placeholder="Nombre de Usuario" required>
+        </div>
+        <div class="user-box">
+            <input type="text" [(ngModel)]='firstName' name="firstname" id="firstname" size="25" placeholder="Primer Nombre" required>
+        </div>
+        <div class="user-box">
+            <input type="text" [(ngModel)]='lastName' name="lastname" id="lastname" size="25" placeholder="Primer Apellido" required>
+        </div>
+        <div class="user-box">
+                <input type="email" [(ngModel)]='email' name="email" id="email" size="25" placeholder="Correo Electrónico" required>
+        </div>
+        <div class="user-box">
+            <input #passwordField [type]="passwordVisible" [(ngModel)]='password' name="password" id="password" size="25" placeholder="Contraseña" required>
+            <span class="toggle-password">
+                <i [class]="passwordVisible ? 'fa fa-eye-slash' : 'fa fa-eye'" (click)="togglePasswordVisibility()"></i>
+            </span>
+        </div>
+        <button type="submit" (click)="createUser()" class="button">Registrarse</button>
+        <p class="signup-text">¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a></p>
+    </form>
+    <app-spinner *ngIf="loading"></app-spinner>
+</div>
