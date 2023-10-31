@@ -16,6 +16,7 @@ export class LoginComponent {
   password: string = ''
 
   loading: boolean = false;
+  isValidToken: any;
 
   constructor(
     private toastr: ToastrService, 
@@ -61,7 +62,7 @@ export class LoginComponent {
         },
         error: (e: HttpErrorResponse) => {
           this.loading = false
-          if(e.error.msg) {
+          if(e.status === 404) {
             this.toastr.error(`Credenciales NO validas`, 'Error!')
           } else {
             this.toastr.error(`Uups, ocurrió un error`, 'Error!')

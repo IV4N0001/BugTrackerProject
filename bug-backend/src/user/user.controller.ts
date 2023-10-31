@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ParseIntPipe, Delete, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ParseIntPipe, Delete, Patch, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUserDto';
 import { UserService } from './user.service';
 import { user } from './user.entity';
@@ -13,6 +13,7 @@ import { JoinProject } from './dto/joinProjectDto';
 
 @Controller('user')
 export class UserController {
+
     constructor(private userService: UserService, private jwtService: JwtService,) {}
     
     @Get()
@@ -38,10 +39,10 @@ export class UserController {
     @Post('login')
     async login(@Body() loginData: { userName: string; password: string }) {
         const { userName, password } = loginData;
-        const user = await this.userService.getUserByUsername(userName);
+        const user: user = await this.userService.getUserByUsername(userName);
         
         if (!user) {
-            return { message: 'Invalid Credentials!' };
+            throw new HttpException(`User with ${userName} not found`, HttpStatus.NOT_FOUND);
         }
         
         // Comparar la contraseña proporcionada con la contraseña almacenada desencriptándola
@@ -51,9 +52,8 @@ export class UserController {
         );
         
         if (!isPasswordValid) {
-            return { message: 'Invalid Credentials!' };
+            throw new HttpException(`Password invalid`, HttpStatus.NOT_FOUND);
         }
-        
         // Generar un token JWT solo si las credenciales son válidas
         const payload = { userName: user.userName, sub: user.id };
         const accessToken = this.jwtService.sign(payload);

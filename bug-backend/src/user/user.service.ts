@@ -72,21 +72,29 @@ export class UserService {
         return username;
     }
 
-    async loginUser(userName: string, password: string) {
-        const user = await this.userRepository.findOne({ where: { userName } });
-    
+    /*async login( loginData: { userName: string; password: string }) {
+        const { userName, password } = loginData;
+        const user = await this.getUserByUsername(userName);
+        
         if (!user) {
             throw new HttpException(`User with ${userName} not found`, HttpStatus.NOT_FOUND);
         }
-    
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-    
+        
+        // Comparar la contraseña proporcionada con la contraseña almacenada desencriptándola
+        const isPasswordValid = await this.comparePasswords(
+            password,
+            user.password
+        );
+        
         if (!isPasswordValid) {
-            throw new HttpException(`User with ${password} not found`, HttpStatus.NOT_FOUND);
+            throw new HttpException(`Password invalid`, HttpStatus.NOT_FOUND);
         }
-    
-        return user;
-    }
+        // Generar un token JWT solo si las credenciales son válidas
+        const payload = { userName: user.userName, sub: user.id };
+        const accessToken = this.jwt.sign(payload);
+        
+        return { access_token: accessToken };
+    }*/
 
     async comparePasswords(plainPassword: string, hashedPassword: string) {
         return bcrypt.compare(plainPassword, hashedPassword);
