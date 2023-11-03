@@ -1,4 +1,9 @@
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/app/interfaces/user';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-request-pwd',
@@ -6,5 +11,41 @@ import { Component } from '@angular/core';
   styleUrls: ['./request-pwd.component.css']
 })
 export class RequestPwdComponent {
+  email: string = ''
+  
+  loading: boolean = false;
 
+  constructor(
+    private toastr: ToastrService, 
+    private userService: UserService,
+    private router: Router
+  ) { }
+
+  requestPwd() {
+    if(this.email === '') {
+      this.toastr.error('No deje ningun campo sin llenar!', 'Error')
+    } else {
+      const user: User = {
+        email: this.email
+      }
+
+      this.loading = true
+
+      this.userService.requestPwd(user).subscribe({
+        next: (v) => {
+          this.loading = false
+          this.toastr.success(`Se ha enviado un token a ${user.email}`, 'Token enviado')
+          this.router.navigate(['/restorePwd'])
+        },
+        error: (e: HttpErrorResponse) => {
+          this.loading = false
+          if(e.status === 404) {
+            this.toastr.error(`No existe ningun usuario con el correo ${user.email} asociado`, 'Error!')
+          } else {
+            this.toastr.error(`Uups, ocurrió un error`, 'Error!')
+          }
+        }
+      })
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component'
 import { SignComponent } from './components/sign/sign.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RequestPwdComponent } from './components/request-pwd/request-pwd.component';
+import { RestorePwdComponent } from './components/restore-pwd/restore-pwd.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'requestPwd',
     component: RequestPwdComponent
+  },
+  {
+    path: 'restorePwd',
+    component: RestorePwdComponent
   },
   {
     path: 'dashboard',

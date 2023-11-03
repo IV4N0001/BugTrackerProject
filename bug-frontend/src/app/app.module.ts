@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { RestorePwdComponent } from './components/restore-pwd/restore-pwd.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
     SignComponent,
     DashboardComponent,
     RequestPwdComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    RestorePwdComponent
   ],
   imports: [
     BrowserModule,

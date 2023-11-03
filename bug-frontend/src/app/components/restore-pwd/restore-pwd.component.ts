@@ -1,18 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-restore-pwd',
+  templateUrl: './restore-pwd.component.html',
+  styleUrls: ['./restore-pwd.component.css']
 })
-
-export class LoginComponent {
-  userName: string = ''
+export class RestorePwdComponent {
+  token: string = ''
   password: string = ''
 
   loading: boolean = false;
@@ -23,35 +22,36 @@ export class LoginComponent {
     private userService: UserService,
     private router: Router
   ) { }
-
+  
   @ViewChild('passwordField')
   passwordField!: ElementRef;
-  
+
   togglePasswordVisibility() {
-      this.passwordVisible = !this.passwordVisible;
-      this.passwordField.nativeElement.type = this.passwordVisible ? 'text' : 'password';    
+    this.passwordVisible = !this.passwordVisible;
+    this.passwordField.nativeElement.type = this.passwordVisible ? 'text' : 'password';    
   }
-  
-  login() {
-    if(this.userName === '' || this.password === '') {
+
+  restorePwd() {
+    if(this.token === '' || this.password === '') {
       this.toastr.error('No deje ningun campo sin llenar!', 'Error')
     } else {
       const user: User = {
-        userName: this.userName,
-        password: this.password
+        passwordToken: this.token,
+        password : this.password
       }
 
       this.loading = true;
 
-      this.userService.login(user).subscribe({
-        next: (token) => {
-          localStorage.setItem('token', JSON.stringify(token))
-          this.router.navigate(['/dashboard'])
+      this.userService.restorePwd(user).subscribe({
+        next: (v) => {
+          this.loading = false
+          this.toastr.success(`Se ha restaurado tu contraseña`, 'Contraseña cambiada')
+          this.router.navigate(['/login'])
         },
         error: (e: HttpErrorResponse) => {
           this.loading = false
           if(e.status === 404) {
-            this.toastr.error(`Credenciales NO validas`, 'Error!')
+            this.toastr.error(`No existe ningun usuario con el token ${user.passwordToken} asociado`, 'Error!')
           } else {
             this.toastr.error(`Uups, ocurrió un error`, 'Error!')
           }
@@ -60,6 +60,3 @@ export class LoginComponent {
     }
   }
 }
-
-
-

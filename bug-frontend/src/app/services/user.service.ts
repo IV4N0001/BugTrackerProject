@@ -25,4 +25,12 @@ export class UserService {
   login(user: User): Observable<string> {
     return this.http.post<string>(`${this.APPUrl}${this.APIUrl}/login`, user)
   }
+
+  requestPwd(user: User): Observable<any> {
+    return this.http.patch(`${this.APPUrl}${this.APIUrl}/requestPwd`, user)
+  }
+
+  restorePwd(user: User): Observable<any> {
+    return this.http.patch(`${this.APPUrl}${this.APIUrl}/restorePwd`, user)
+  }
 }
