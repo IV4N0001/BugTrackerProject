@@ -12,6 +12,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { RestorePwdComponent } from './components/restore-pwd/restore-pwd.component';
+import { BodyComponent } from './components/body/body.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { BugsComponent } from './components/bugs/bugs.component';
+import { ProjectsComponent } from './components/projects/projects.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { ScreenComponent } from './components/screen/screen.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +27,13 @@ import { RestorePwdComponent } from './components/restore-pwd/restore-pwd.compon
     DashboardComponent,
     RequestPwdComponent,
     SpinnerComponent,
-    RestorePwdComponent
+    RestorePwdComponent,
+    BodyComponent,
+    SidenavComponent,
+    BugsComponent,
+    ProjectsComponent,
+    SettingsComponent,
+    ScreenComponent
   ],
   imports: [
     BrowserModule,

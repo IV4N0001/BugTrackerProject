@@ -6,7 +6,7 @@
 }
 
 body {
-	background-color: #f1f1f1;
+	background-color: rgb(255, 255, 255);;
 }
 
 .login-box {
@@ -96,4 +96,3 @@ body {
 	font-size: 14px;
 	transition: all 0.5s ease;
 }
-

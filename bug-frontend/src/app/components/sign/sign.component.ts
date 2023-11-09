@@ -19,7 +19,8 @@ export class SignComponent {
   password: string = '';
 
   loading: boolean = false;
-  
+  passwordVisible: boolean = false;
+
   constructor(
     private toastr: ToastrService, 
     private userService: UserService,
@@ -28,24 +29,12 @@ export class SignComponent {
 
   @ViewChild('passwordField')
   passwordField!: ElementRef;
-
-  passwordVisible: boolean = false;
-
-  togglePasswordVisibility(): void {
-    const passwordElement = this.passwordField.nativeElement as HTMLInputElement;
-    const toggleButton = document.querySelector(".toggle-password i");
-
-    if (passwordElement.type === "password") {
-      passwordElement.type = "text";
-      toggleButton?.classList.remove("fa-eye");
-      toggleButton?.classList.add("fa-eye-slash");
-    } else {
-      passwordElement.type = "password";
-      toggleButton?.classList.remove("fa-eye-slash");
-      toggleButton?.classList.add("fa-eye");
-    }
-  }
   
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+    this.passwordField.nativeElement.type = this.passwordVisible ? 'text' : 'password';    
+  }
+
   createUser() {
     if(this.userName === '' || this.firstName === '' || this.lastName === '' || this.email === '' || this.password === '') {
       this.toastr.error('No deje ningun campo sin llenar!', 'Error')

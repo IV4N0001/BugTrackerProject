@@ -5,6 +5,10 @@ import { SignComponent } from './components/sign/sign.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RequestPwdComponent } from './components/request-pwd/request-pwd.component';
 import { RestorePwdComponent } from './components/restore-pwd/restore-pwd.component';
+import { ProjectsComponent } from './components/projects/projects.component';
+import { BugsComponent } from './components/bugs/bugs.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { ScreenComponent } from './components/screen/screen.component';
 
 const routes: Routes = [
   {
@@ -29,6 +33,22 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent
+  },
+  {
+    path: 'projects',
+    component: ProjectsComponent
+  },
+  {
+    path: 'bugs',
+    component: BugsComponent
+  },  
+  {
+    path: 'settings',
+    component: SettingsComponent
+  },
+  {
+    path: 'wlcome',
+    component: ScreenComponent
   },
   {
     path: '**', redirectTo: 'login', pathMatch: 'full'

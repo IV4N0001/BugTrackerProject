@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/interfaces/user';
@@ -32,6 +32,8 @@ export class LoginComponent {
       this.passwordField.nativeElement.type = this.passwordVisible ? 'text' : 'password';    
   }
   
+  @Output() isLoggedInChange = new EventEmitter<boolean>();
+
   login() {
     if(this.userName === '' || this.password === '') {
       this.toastr.error('No deje ningun campo sin llenar!', 'Error')
@@ -46,6 +48,7 @@ export class LoginComponent {
       this.userService.login(user).subscribe({
         next: (token) => {
           localStorage.setItem('token', JSON.stringify(token))
+          this.isLoggedInChange.emit(true);
           this.router.navigate(['/dashboard'])
         },
         error: (e: HttpErrorResponse) => {
