@@ -8,7 +8,6 @@ import { RestorePwdComponent } from './components/restore-pwd/restore-pwd.compon
 import { ProjectsComponent } from './components/projects/projects.component';
 import { BugsComponent } from './components/bugs/bugs.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { ScreenComponent } from './components/screen/screen.component';
 
 const routes: Routes = [
   {
@@ -45,10 +44,6 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent
-  },
-  {
-    path: 'wlcome',
-    component: ScreenComponent
   },
   {
     path: '**', redirectTo: 'login', pathMatch: 'full'

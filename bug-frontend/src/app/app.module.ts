@@ -17,7 +17,6 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { BugsComponent } from './components/bugs/bugs.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { ScreenComponent } from './components/screen/screen.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,6 @@ import { ScreenComponent } from './components/screen/screen.component';
     BugsComponent,
     ProjectsComponent,
     SettingsComponent,
-    ScreenComponent
   ],
   imports: [
     BrowserModule,
