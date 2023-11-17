@@ -49,7 +49,9 @@ export class LoginComponent {
         next: (token) => {
           localStorage.setItem('token', JSON.stringify(token))
           this.isLoggedInChange.emit(true);
-          this.router.navigate(['/dashboard'])
+          const userName = this.userName
+          this.userService.setUserName(userName);  // Guarda el nombre de usuario
+          this.router.navigate(['/dashboard']);
         },
         error: (e: HttpErrorResponse) => {
           this.loading = false

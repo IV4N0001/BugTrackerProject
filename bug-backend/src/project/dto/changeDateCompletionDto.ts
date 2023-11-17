@@ -7,5 +7,5 @@ export class ChangeDateCompletion {
 
     @IsNotEmpty()
     @IsString()
-    newDateCompletion: Date
+    newDateCompletion: string
 }

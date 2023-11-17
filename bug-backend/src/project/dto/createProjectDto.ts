@@ -19,5 +19,5 @@ export class CreateProjectDto {
     expectedCompletionAt: string
     
     @IsNotEmpty()
-    category: category
+    category: string
 }

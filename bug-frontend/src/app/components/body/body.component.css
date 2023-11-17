@@ -1,6 +1,7 @@
 .body {
-    width: 100%;
+    width: calc(100% - 5rem);
     height: 100vh;
+    margin-left: 5rem;
     z-index: 0;
     position: relative;
     top: 0;
@@ -15,6 +16,10 @@
 }
 
 .body-md-screen {
-    width: 100%;
+    width: calc(100% - 5rem);;
+    margin-left: 5rem;
+}
+
+.body-full {
     margin-left: 0;
 }

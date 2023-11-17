@@ -48,7 +48,7 @@ export class user {
     @JoinColumn()
     bug: bug
 
-    @OneToMany(() => project, project => project.user)
+    @OneToMany(() => project, project => project.userName)
     @JoinColumn()
     project: project
 

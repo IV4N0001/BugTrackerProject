@@ -10,3 +10,22 @@ body {
     position: relative;
     font-family: 'Roboto', sans-serif;
 }
+
+.card {
+    display: flex;
+    flex-direction: column;
+    border-radius: .5rem;
+    background-color: #FFF;
+    margin: 0 .25rem .5rem #E6EDEF;
+}
+
+.card-head {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #EDF1F7;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.card-body { 
+    padding: 1rem 1.5rem;
+}

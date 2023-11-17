@@ -18,7 +18,7 @@ export class project {
 
     @ManyToOne(() => user)
     @JoinColumn()
-    user: user
+    userName: user
     
     @Column()
     description: string
@@ -26,11 +26,11 @@ export class project {
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date
 
-    @Column({ type: 'datetime' })
-    expectedCompletionAt: Date
+    @Column()
+    expectedCompletionAt: string
 
     @Column()
-    category: category
+    category: string
 
     @OneToMany(() => bug, bug => bug.project)
     @JoinColumn()
@@ -38,6 +38,6 @@ export class project {
 
     //@ManyToMany(() => user, user => user.projects_collaborations)
     //@JoinTable()
-    @Column('simple-array')
+    @Column('simple-array', { nullable: true})
     collaborators: string[];
 }

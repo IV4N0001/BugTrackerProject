@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { User } from '../interfaces/user';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,13 @@ export class UserService {
   constructor(private http: HttpClient) {
     this.APPUrl = environment.endpoint;
     this.APIUrl = 'user'
+  }
+
+  private userNameSubject = new BehaviorSubject<string>('');
+  userName$ = this.userNameSubject.asObservable();
+
+  setUserName(userName: string) {
+    this.userNameSubject.next(userName);
   }
 
   sign(user: User): Observable<any> {

@@ -17,7 +17,8 @@ export class ProjectService {
     constructor
     (
         @Inject(forwardRef(() => UserService)) private userService: UserService,
-        @InjectRepository(project) private projectRepository: Repository<project>, private mailerService: MailerService
+        @InjectRepository(project) private projectRepository: Repository<project>, private mailerService: MailerService,
+        @InjectRepository(project) private userRepository: Repository<user>
     ) {}
 
     async createProject(project: CreateProjectDto) {
@@ -45,6 +46,16 @@ export class ProjectService {
 
     async getProjectByName(name: string) {
         const nameProject = await this.projectRepository.findOne({ where: { name }})
+
+        if(!nameProject) {
+            throw new HttpException(`Project with name: ${name} not found`, HttpStatus.NOT_FOUND);
+        }
+
+        return nameProject;
+    }
+
+    async getProjectByUser(userName: string) {
+        const nameProject = await this.userRepository.findOne({ where: { userName }})
 
         if(!nameProject) {
             throw new HttpException(`Project with name: ${name} not found`, HttpStatus.NOT_FOUND);
