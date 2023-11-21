@@ -31,9 +31,11 @@ export class ProjectService {
         const newProject = this.projectRepository.create(project);
         this.projectRepository.save(newProject);
     }
-
+    
     async getProjects() {
-        return this.projectRepository.find();
+        return this.projectRepository.find({
+            relations: ['fk_user']
+        });
     }
 
     async getProject(id: number) {

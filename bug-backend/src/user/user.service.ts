@@ -38,8 +38,10 @@ export class UserService {
         this.userRepository.save(newUser);
     }
 
-    getUsers() {
-        return this.userRepository.find();
+    async getUsers() {
+        return this.userRepository.find({
+            relations: ['fk_project']
+        });
     }
 
     async getUser(id: number) {

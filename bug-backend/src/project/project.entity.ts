@@ -16,9 +16,11 @@ export class project {
     @Column({unique: true})
     name: string
 
-    @ManyToOne(() => user)
-    @JoinColumn()
-    userName: user
+    @Column()
+    userName: string
+    
+    @ManyToOne(() => user, (user) => user.fk_project)
+    fk_user: user
     
     @Column()
     description: string

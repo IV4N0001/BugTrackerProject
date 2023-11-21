@@ -2,7 +2,7 @@ import { bug } from "src/bug/bug.entity"
 import { coment } from "src/coment/coment.entity"
 import { notification } from "src/notification/notification.entity"
 import { project } from "src/project/project.entity"
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToMany, ManyToOne } from "typeorm"
 
 export enum role {
     administrator = 'ADMINISTRATOR',
@@ -48,9 +48,11 @@ export class user {
     @JoinColumn()
     bug: bug
 
-    @OneToMany(() => project, project => project.userName)
-    @JoinColumn()
-    project: project
+    @Column('simple-array')
+    project: string[]
+
+    @OneToMany(() => project, (project) => project.fk_user)
+    fk_project: project[]
 
     @OneToMany(() => notification, notification => notification.addressee)
     @JoinColumn()
