@@ -30,19 +30,7 @@ export class SidenavComponent implements OnInit{
     }
   }
 
-  userName: string = ''
-  constructor(private router: Router, private userService: UserService) {
-
-  }
-
-  navigateTo(section: string) {
-    // Navega a la sección y agrega el parámetro userName a la URL
-    this.router.navigate([section], { queryParams: { userName: this.userName } });
-  }
   ngOnInit(): void {
-    this.userService.userName$.subscribe(userName => {
-      this.userName = userName;
-    });
     this.screenWidth = window.innerWidth;
   }
 

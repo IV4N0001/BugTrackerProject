@@ -1,7 +1,41 @@
 <h1>Projects</h1>
+<button mat-fab class="add-project-button" (click)="openProjectForm()">
+    <mat-icon>add</mat-icon>
+</button>
 <div *ngFor="let project of projects" class="card">
-    <div class="card-head">{{ project.title }}</div>
+    <div class="card-head">Name: {{ project.name }}</div>
     <div class="card-body">
-        {{ project.description }}
+        <p>Description: {{ project.description }}</p>
+        <p>Category: {{ project.category }}</p>
+        <p>Created At: {{ project.createdAt | date:'medium' }}</p>
+        <p>Expected Completion At: {{ project.expectedCompletionAt | date:'medium' }}</p>
+    
+        <!-- Verifica si collaborators es null antes de mostrarlo -->
+        <p *ngIf="project.collaborators !== null">Collaborators: {{ project.collaborators }}</p>
     </div>
+</div>
+<div *ngIf="showProjectForm" id="projectForm" class="project-form-container">
+    <div class="project-form-header">Form Header</div>
+    <form (submit)="submitProjectForm()" [formGroup]="projectForm">
+        <label for="name">Name Project</label>
+        <input type="text" id="name" name="name" formControlName="name" required>
+    
+        <label for="userName">Created By</label>
+        <input type="text" id="userName" name="userName" formControlName="userName" [value]="projectForm.get('userName')?.value" readonly>
+    
+        <label for="description">Description</label>
+        <textarea id="description" name="description" formControlName="description" required></textarea>
+    
+        <label for="expectedCompletionAt">Expected Completion At</label>
+        <input type="date" id="expectedCompletionAt" name="expectedCompletionAt" formControlName="expectedCompletionAt" required>
+    
+        <label for="category">Category</label>
+        <select id="category" name="category" formControlName="category" required>
+            <option value="OPEN">OPEN</option>
+            <!--<option value="IN_PROGRESS">IN PROGRESS</option>
+            <option value="CLOSED">CLOSED</option>-->
+        </select>
+    
+        <button type="submit">Agregar Proyecto</button>
+    </form>
 </div>

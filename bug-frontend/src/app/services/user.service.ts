@@ -18,13 +18,6 @@ export class UserService {
     this.APIUrl = 'user'
   }
 
-  private userNameSubject = new BehaviorSubject<string>('');
-  userName$ = this.userNameSubject.asObservable();
-
-  setUserName(userName: string) {
-    this.userNameSubject.next(userName);
-  }
-
   sign(user: User): Observable<any> {
     return this.http.post(`${this.APPUrl}${this.APIUrl}/createUser`, user)
   }

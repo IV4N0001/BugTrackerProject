@@ -52,7 +52,7 @@ export class user {
     project: string[]
 
     @OneToMany(() => project, (project) => project.fk_user)
-    fk_project: project[]
+    fk_project: project
 
     @OneToMany(() => notification, notification => notification.addressee)
     @JoinColumn()

@@ -8,7 +8,7 @@ export class CreateProjectDto {
     name: string
 
     @IsNotEmpty()
-    user: user
+    userName: string
 
     @IsNotEmpty()
     @IsString()

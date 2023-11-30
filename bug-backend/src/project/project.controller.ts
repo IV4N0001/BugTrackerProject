@@ -22,8 +22,8 @@ export class ProjectController {
         return this.projectService.getProject(id);
     }
 
-    @Get('getByUser')
-    getProjectByUsername(@Param('getByUser') userName: string) {
+    @Get('getByUser/:userName')
+    getProjectByUsername(@Param('userName') userName: string) {
         return this.projectService.getProjectByUser(userName);
 
     }

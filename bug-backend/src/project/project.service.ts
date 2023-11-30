@@ -30,6 +30,17 @@ export class ProjectService {
 
         const newProject = this.projectRepository.create(project);
         this.projectRepository.save(newProject);
+
+        const user = await this.userRepository.findOne({ where: { userName: project.userName } });
+
+        if (!user) {
+            throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+        }
+
+        // Asociar el usuario al proyecto y guardar el proyecto nuevamente
+        newProject.fk_user = user;
+        await this.projectRepository.save(newProject);
+
     }
     
     async getProjects() {
@@ -60,7 +71,7 @@ export class ProjectService {
         const nameProject = await this.userRepository.findOne({ where: { userName }})
 
         if(!nameProject) {
-            throw new HttpException(`Project with name: ${name} not found`, HttpStatus.NOT_FOUND);
+            throw new HttpException(`Project with name: ${userName} not found`, HttpStatus.NOT_FOUND);
         }
 
         return nameProject;

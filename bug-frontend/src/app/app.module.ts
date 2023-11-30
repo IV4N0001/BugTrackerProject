@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -7,7 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignComponent } from './components/sign/sign.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RequestPwdComponent } from './components/request-pwd/request-pwd.component'
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
@@ -44,6 +45,9 @@ import { SettingsComponent } from './components/settings/settings.component';
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
     }),// ToastrModule added
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

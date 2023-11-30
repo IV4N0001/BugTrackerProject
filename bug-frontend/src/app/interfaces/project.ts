@@ -6,6 +6,7 @@ export enum category {
 
 export interface Project {
     name?: string
+    userName?: string
     description?: string
     createdAt?: Date
     expectedCompletionAt?: Date
