@@ -15,8 +15,8 @@
     </div>
 </div>
 <div *ngIf="showProjectForm" id="projectForm" class="project-form-container">
-    <div class="project-form-header">Form Header</div>
-    <form (submit)="submitProjectForm()" [formGroup]="projectForm">
+    <button class="close-button" (click)="closeProjectForm()">X</button>
+    <form (submit)="createProject()" [formGroup]="projectForm">
         <label for="name">Name Project</label>
         <input type="text" id="name" name="name" formControlName="name" required>
     
@@ -24,7 +24,7 @@
         <input type="text" id="userName" name="userName" formControlName="userName" [value]="projectForm.get('userName')?.value" readonly>
     
         <label for="description">Description</label>
-        <textarea id="description" name="description" formControlName="description" required></textarea>
+        <textarea id="description" name="description" formControlName="description" style="width: 100%; height: 110px; resize: none;" required></textarea>
     
         <label for="expectedCompletionAt">Expected Completion At</label>
         <input type="date" id="expectedCompletionAt" name="expectedCompletionAt" formControlName="expectedCompletionAt" required>
@@ -36,6 +36,7 @@
             <option value="CLOSED">CLOSED</option>-->
         </select>
     
-        <button type="submit">Agregar Proyecto</button>
+        <button type="submit" class="add-project-btn">Add Project</button>
     </form>
+    <app-spinner *ngIf="loading"></app-spinner>
 </div>

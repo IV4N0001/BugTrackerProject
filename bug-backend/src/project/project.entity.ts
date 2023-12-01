@@ -19,9 +19,10 @@ export class project {
     @Column()
     userName: string
     
-    @ManyToOne(() => user, (user) => user.fk_project)
-    fk_user: user
-    
+    @ManyToOne(() => user, (user) => user.projects)
+    @JoinColumn({ name: 'userName', referencedColumnName: 'userName' })
+    fk_user: user;
+
     @Column()
     description: string
 

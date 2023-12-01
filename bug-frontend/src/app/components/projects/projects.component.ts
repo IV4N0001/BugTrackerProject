@@ -1,5 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { Project } from 'src/app/interfaces/project';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
@@ -10,31 +13,25 @@ import { ProjectService } from 'src/app/services/project.service';
 
 export class ProjectsComponent {
   projects: any[] = [];
-  userName: string = '';
+  loading: boolean = false;
   showProjectForm: boolean = false;
   projectForm: FormGroup;
 
-  constructor(private projectService: ProjectService, private fb: FormBuilder) {
+  constructor(private projectService: ProjectService, private fb: FormBuilder, private toastr: ToastrService) {
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
-      userName: [{ value: localStorage.getItem('userName'), disabled: true }, Validators.required],
+      userName: [{ value: '' }, Validators.required],
       description: ['', Validators.required],
       expectedCompletionAt: ['', Validators.required],
       category: ['OPEN', Validators.required]
     });
 
-
+    this.projectForm.patchValue({
+      userName: localStorage.getItem('userName') || '',
+    });
   }
 
   ngOnInit(): void {
-    // Obtén el nombre de usuario desde el ActivatedRoute
-    this.userName = localStorage.getItem('userName') || '';
-
-    if (this.userName.trim() === '') {
-      console.warn('userName is empty. Skipping project load.');
-      return;
-    }
-
     this.loadProjects()
   }
 
@@ -42,17 +39,10 @@ export class ProjectsComponent {
     this.showProjectForm = true;
   }
 
-  submitProjectForm() {
-    // Aquí puedes agregar la lógica para manejar el envío del formulario
-    console.log('Formulario enviado:', this.projectForm.value);
-
-    // Puedes agregar la lógica para guardar el proyecto en tu servicio, por ejemplo:
-    // this.projectService.addProject(this.projectForm.value);
-
-    // Luego puedes cerrar el formulario si es necesario
+  closeProjectForm() {
     this.showProjectForm = false;
   }
-
+  
   private loadProjects() {
     this.projectService.getProjects().subscribe(
       (data) => {
@@ -66,6 +56,36 @@ export class ProjectsComponent {
   }
   
   createProject() {
-    throw new Error('Method not implemented.');
+    if(this.projectForm.valid) {
+      const project: Project = {
+        name: this.projectForm.value.name,
+        userName: this.projectForm.value.userName,
+        description: this.projectForm.value.description,
+        expectedCompletionAt: this.projectForm.value.expectedCompletionAt,
+        category: this.projectForm.value.category
+      };
+    
+      this.loading = true;
+    
+      // Llama al servicio para crear el proyecto
+      this.projectService.createProject(project).subscribe({
+        next: (v) => {
+          this.loading = false;
+          this.toastr.success('Proyecto creado con éxito!', 'Proyecto Creado');
+          console.log(project);
+        },
+        error: (e: HttpErrorResponse) => {
+          this.loading = false;
+          if (e.error.msg) {
+            this.toastr.error(`Ya existe un proyecto con el nombre: ${project.name}. Intente con otro nombre`, 'Error!');
+          } else {
+            this.toastr.error(`Uups, ocurrió un error`, 'Error!');
+          }
+        }
+      });
+
+    } else {
+      this.toastr.error('No deje ningun campo sin llenar!', 'Error')
+    }
   }
 }

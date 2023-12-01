@@ -40,7 +40,7 @@ export class UserService {
 
     async getUsers() {
         return this.userRepository.find({
-            relations: ['fk_project']
+            relations: ['projects']
         });
     }
 

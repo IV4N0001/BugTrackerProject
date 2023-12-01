@@ -22,31 +22,32 @@ export class ProjectService {
     ) {}
 
     async createProject(project: CreateProjectDto) {
-        const projectFound = await this.projectRepository.findOne({where: { name: project.name }})
-
-        if(projectFound) {
-            return new HttpException('Project already exist', HttpStatus.CONFLICT);
+        const projectFound = await this.projectRepository.findOne({ where: { name: project.name } });
+    
+        if (projectFound) {
+            return new HttpException('Project already exists', HttpStatus.CONFLICT);
         }
-
-        const newProject = this.projectRepository.create(project);
-        this.projectRepository.save(newProject);
-
+    
         const user = await this.userRepository.findOne({ where: { userName: project.userName } });
-
+    
         if (!user) {
-            throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
-
+    
         // Asociar el usuario al proyecto y guardar el proyecto nuevamente
-        newProject.fk_user = user;
+        const newProject = this.projectRepository.create({
+            ...project,
+            fk_user: user,
+        });
+        
         await this.projectRepository.save(newProject);
-
     }
     
+    
+
     async getProjects() {
-        return this.projectRepository.find({
-            relations: ['fk_user']
-        });
+        const project = await this.projectRepository.find()
+        return project;
     }
 
     async getProject(id: number) {
@@ -68,14 +69,14 @@ export class ProjectService {
     }
 
     async getProjectByUser(userName: string) {
-        const nameProject = await this.userRepository.findOne({ where: { userName }})
-
-        if(!nameProject) {
-            throw new HttpException(`Project with name: ${userName} not found`, HttpStatus.NOT_FOUND);
+        const project = await this.projectRepository.find({where: { userName }});
+    
+        if (!project) {
+            throw new HttpException(`User with name: ${userName} not found`, HttpStatus.NOT_FOUND);
         }
-
-        return nameProject;
-    }
+    
+        return project;
+    }    
 
     public async getCollaboratorByProject(name: string) {
         const projectCollaborators: project = await this.getProjectByName(name)

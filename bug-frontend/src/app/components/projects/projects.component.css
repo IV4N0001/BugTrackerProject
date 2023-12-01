@@ -53,6 +53,24 @@
     cursor: pointer;
 }
 
+
+.project-form-container .close-button {
+    position: absolute;
+    top: 10px;
+    height: 25px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: red; /* Color del texto */
+    transform: translateY(-50%);
+}
+
+.close-button:hover {
+    background: none; /* Elimina el fondo al pasar el mouse */
+}
+
 /* projects.component.css */
 
 .project-form-container {
@@ -87,9 +105,7 @@
     border-radius: 4px;
 }
 
-.project-form-container textarea {
-    height: 100px;
-}
+
 .project-form-container button {
     padding: 10px;
     background-color: red;
@@ -99,6 +115,6 @@
     cursor: pointer;
 }
 
-.project-form-container button:hover {
+.project-form-container .add-project-btn:hover {
     background-color: black;
 }

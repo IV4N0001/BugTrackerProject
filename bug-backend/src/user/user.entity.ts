@@ -48,11 +48,10 @@ export class user {
     @JoinColumn()
     bug: bug
 
-    @Column('simple-array')
-    project: string[]
-
     @OneToMany(() => project, (project) => project.fk_user)
-    fk_project: project
+    @JoinColumn({ name: 'userName', referencedColumnName: 'userName' })
+    @Column('simple-array', {nullable: true})
+    projects: string[]
 
     @OneToMany(() => notification, notification => notification.addressee)
     @JoinColumn()
