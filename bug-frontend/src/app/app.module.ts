@@ -18,6 +18,7 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { BugsComponent } from './components/bugs/bugs.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

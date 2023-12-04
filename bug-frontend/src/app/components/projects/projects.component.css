@@ -53,6 +53,28 @@
     cursor: pointer;
 }
 
+.add-collaborator-button {
+    position: fixed;
+    bottom: 20px;
+    right: 90px;
+    background-color: red; /* Color rojo */
+    color: #fff; /* Color del texto */
+    border-radius: 17%; /* Hace el botón redondeado */
+    width: 50px; /* Ancho del botón */
+    height: 50px; /* Altura del botón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none; /* Elimina el borde */
+}
+
+.add-collaborator-button:hover {
+    background-color: black;
+    cursor: pointer;
+}
+
 
 .project-form-container .close-button {
     position: absolute;
@@ -105,7 +127,6 @@
     border-radius: 4px;
 }
 
-
 .project-form-container button {
     padding: 10px;
     background-color: red;
@@ -117,4 +138,10 @@
 
 .project-form-container .add-project-btn:hover {
     background-color: black;
+}
+
+.mat-paginator{
+    position: absolute;
+    top: 660px; 
+    left: 450px;
 }

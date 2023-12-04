@@ -2,18 +2,24 @@
 <button mat-fab class="add-project-button" (click)="openProjectForm()">
     <mat-icon>add</mat-icon>
 </button>
-<div *ngFor="let project of projects" class="card">
-    <div class="card-head">Name: {{ project.name }}</div>
-    <div class="card-body">
-        <p>Description: {{ project.description }}</p>
-        <p>Category: {{ project.category }}</p>
-        <p>Created At: {{ project.createdAt | date:'medium' }}</p>
-        <p>Expected Completion At: {{ project.expectedCompletionAt | date:'medium' }}</p>
-    
-        <!-- Verifica si collaborators es null antes de mostrarlo -->
-        <p *ngIf="project.collaborators !== null">Collaborators: {{ project.collaborators }}</p>
+<button mat-fab class="add-collaborator-button" (click)="openCollaboratorForm()">
+    <mat-icon>person_add</mat-icon>
+</button>
+<div *ngIf="projects.length > 0" class="row">
+    <div *ngFor="let project of projects.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)" class="card">
+        <div class="card-head">Name: {{ project.name }}</div>
+            <div class="card-body">
+                <p>Description: {{ project.description }}</p>
+                <p>Category: {{ project.category }}</p>
+                <p>Created At: {{ project.createdAt | date:'medium' }}</p>
+                <p>Expected Completion At: {{ project.expectedCompletionAt | date:'medium' }}</p>
+            
+                <!-- Verifica si collaborators es null antes de mostrarlo -->
+                <p *ngIf="project.collaborators !== null">Collaborators: {{ project.collaborators }}</p>
+            </div>
     </div>
 </div>
+<mat-paginator [pageSize]="itemsPerPage" [length]="projects.length" (page)="onPageChange($event)" showFirstLastButtons class="mat-paginator"></mat-paginator>
 <div *ngIf="showProjectForm" id="projectForm" class="project-form-container">
     <button class="close-button" (click)="closeProjectForm()">X</button>
     <form (submit)="createProject()" [formGroup]="projectForm">
@@ -37,6 +43,39 @@
         </select>
     
         <button type="submit" class="add-project-btn">Add Project</button>
+    </form>
+    <app-spinner *ngIf="loading"></app-spinner>
+<div *ngIf="showProjectForm" id="projectForm" class="project-form-container">
+    <button class="close-button" (click)="closeProjectForm()">X</button>
+    <form (submit)="createProject()" [formGroup]="projectForm">
+        <label for="name">Name Project</label>
+        <input type="text" id="name" name="name" formControlName="name" required>
+    
+        <label for="userName">Created By</label>
+        <input type="text" id="userName" name="userName" formControlName="userName" [value]="projectForm.get('userName')?.value" readonly>
+    
+        <label for="description">Description</label>
+        <textarea id="description" name="description" formControlName="description" style="width: 100%; height: 110px; resize: none;" required></textarea>
+    
+        <label for="expectedCompletionAt">Expected Completion At</label>
+        <input type="date" id="expectedCompletionAt" name="expectedCompletionAt" formControlName="expectedCompletionAt" required>
+    
+        <label for="category">Category</label>
+        <select id="category" name="category" formControlName="category" required>
+            <option value="OPEN">OPEN</option>
+            <!--<option value="IN_PROGRESS">IN PROGRESS</option>
+            <option value="CLOSED">CLOSED</option>-->
+        </select>
+    
+        <button type="submit" class="add-project-btn">Add Project</button>
+    </form>
+    <app-spinner *ngIf="loading"></app-spinner>
+</div>
+<div *ngIf="showCollaboratorForm" id="collaboratorForm" class="collaborator-form-container">
+    <button class="close-button" (click)="closeCollaboratorForm()">X</button>
+    <form (submit)="addCollaborator()" [formGroup]="projectForm">
+            
+        <button type="submit" class="add-collaborator-btn">Add Project</button>
     </form>
     <app-spinner *ngIf="loading"></app-spinner>
 </div>

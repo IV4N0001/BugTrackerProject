@@ -27,7 +27,7 @@ export class ProjectController {
         return this.projectService.getProjectByUser(userName);
     }
     
-    @Patch('createProject')
+    @Post('createProject')
     createProject(@Body() newProject: CreateProjectDto) {
         this.projectService.createProject(newProject);
     }

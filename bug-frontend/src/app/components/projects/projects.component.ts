@@ -15,7 +15,10 @@ export class ProjectsComponent {
   projects: any[] = [];
   loading: boolean = false;
   showProjectForm: boolean = false;
+  showCollaboratorForm: boolean = false;
   projectForm: FormGroup;
+  currentPage = 1;
+  itemsPerPage = 8; // 2 rows of 4 columns
 
   constructor(private projectService: ProjectService, private fb: FormBuilder, private toastr: ToastrService) {
     this.projectForm = this.fb.group({
@@ -26,9 +29,11 @@ export class ProjectsComponent {
       category: ['OPEN', Validators.required]
     });
 
+    
     this.projectForm.patchValue({
       userName: localStorage.getItem('userName') || '',
     });
+
   }
 
   ngOnInit(): void {
@@ -37,17 +42,27 @@ export class ProjectsComponent {
 
   openProjectForm() {
     this.showProjectForm = true;
+    this.showCollaboratorForm = false;
   }
 
   closeProjectForm() {
     this.showProjectForm = false;
   }
+
+  openCollaboratorForm() {
+    this.showCollaboratorForm = true;
+    this.showProjectForm = false;
+  }
+
+  closeCollaboratorForm() {
+    this.showCollaboratorForm = false;
+  }
   
   private loadProjects() {
     this.projectService.getProjects().subscribe(
-      (data) => {
+      (data: Project[]) => {
         console.log(data);
-        this.projects = [data];
+        this.projects = data;
       },
       (error) => {
         console.error('Error fetching projects:', error);
@@ -73,6 +88,8 @@ export class ProjectsComponent {
           this.loading = false;
           this.toastr.success('Proyecto creado con éxito!', 'Proyecto Creado');
           console.log(project);
+          this.loadProjects();
+          this.projectForm.reset();
         },
         error: (e: HttpErrorResponse) => {
           this.loading = false;
@@ -87,5 +104,12 @@ export class ProjectsComponent {
     } else {
       this.toastr.error('No deje ningun campo sin llenar!', 'Error')
     }
+  }
+
+  addCollaborator() {
+
+  }
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex + 1;
   }
 }
