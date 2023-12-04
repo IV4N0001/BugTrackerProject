@@ -23,9 +23,7 @@ export class BugsComponent implements OnInit {
 
         // Aquí puedes acceder a la información del usuario para cada bug
         this.bugs.forEach(bug => {
-          console.log('User ID:', bug.user.id);
-          console.log('User Name:', bug.user.name);
-          // ... otras propiedades del usuario
+          console.log(bug);
         });
       },
       (error) => {

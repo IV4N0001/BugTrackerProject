@@ -54,7 +54,7 @@
         <tbody>
             <tr *ngFor="let bug of bugs">
                 <td>{{ bug.name }}</td>
-                <td>{{ bug.userId }}</td>
+                <td>{{ bug.user.userName }}</td>
                 <td>{{ bug.state }}</td>
                 <td>{{ bug.severity }}</td>
                 <td>{{ bug.createdAt | date:'dd/MM/yyyy'}}</td>
