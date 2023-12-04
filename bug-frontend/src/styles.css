@@ -31,3 +31,16 @@ body {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+#searchBar {
+    width: 500px;
+}
+
+.fa-magnifying-glass {
+    margin-right: 5px;
+}
+
+#Boton_new{
+    background-color: orangered;
+    color: #E6EDEF;
+}
