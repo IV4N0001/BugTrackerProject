@@ -12,4 +12,5 @@ export interface Project {
     expectedCompletionAt?: Date
     category?: category
     collaborators?: string[]
+    role?: string
 }

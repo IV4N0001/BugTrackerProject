@@ -27,14 +27,19 @@ export class ProjectController {
         return this.projectService.getProjectByUser(userName);
     }
     
+    @Get('getCollaborations')
+    getCollaborations() {
+        return this.projectService.getCollaborations();
+    }    
+    
     @Post('createProject')
     createProject(@Body() newProject: CreateProjectDto) {
         this.projectService.createProject(newProject);
     }
 
-    @Delete(':id')
-    deleteProject(@Param('id', ParseIntPipe) id: number) {
-        return this.projectService.deleteProject(id);
+    @Delete('deleteProject/:name')
+    deleteProject(@Param('name') name: string) {
+        return this.projectService.deleteProject(name);
     }
 
     @Patch('changeDescription')

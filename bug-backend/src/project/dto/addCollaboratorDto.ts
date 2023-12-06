@@ -8,4 +8,8 @@ export class AddCollaborator {
     @IsString()
     @IsNotEmpty()
     collaborator: string
+
+    @IsString()
+    @IsNotEmpty()
+    role: string
 }
