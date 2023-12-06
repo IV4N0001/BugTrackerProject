@@ -13,4 +13,6 @@ export interface Project {
     category?: category
     collaborators?: string[]
     role?: string
+    projectName?: string
+    collaboratorName?: string
 }

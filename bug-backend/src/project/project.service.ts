@@ -11,6 +11,7 @@ import { AddCollaborator } from './dto/addCollaboratorDto';
 import { UserService } from 'src/user/user.service';
 import { user } from 'src/user/user.entity';
 import { MailerService } from 'src/mailer/mailer.service';
+import { DeleteCollaborator } from './dto/deleteCollaboratorDto';
 
 @Injectable()
 export class ProjectService {
@@ -50,11 +51,40 @@ export class ProjectService {
         return project;
     }
     
-    async getCollaborations() {
+    async getAllCollaborators() {
         const projects = await this.projectRepository.find();
-        return projects.map(project => project.collaborators.map(collaborator => collaborator.collaborator));
+        const collaboratorsWithDetails = projects.flatMap((project) =>
+            project.collaborators.map((collaborator) => ({
+                collaborator: collaborator.collaborator,
+                project: project.name, // Cambia esto si el nombre del proyecto está en otro campo
+                role: collaborator.role,
+            })),
+        );
+        return collaboratorsWithDetails;
     }
-        
+
+    async deleteCollaboratorFromProject(deleteCollaborator: DeleteCollaborator): Promise<void> {
+        const { projectName, collaboratorName } = deleteCollaborator;
+    
+        // Buscar el proyecto por nombre
+        const project = await this.projectRepository.findOne({ where: { name: projectName } });
+    
+        if (!project) {
+            throw new HttpException(`Project with name: ${projectName} not found`, HttpStatus.NOT_FOUND);
+        }
+    
+        // Filtrar la lista de colaboradores para excluir al colaborador que se va a eliminar
+        const updatedCollaborators = project.collaborators.filter(
+            (collaborator) => collaborator.collaborator !== collaboratorName,
+        );
+    
+        // Actualizar la lista de colaboradores del proyecto con la nueva lista filtrada
+        project.collaborators = updatedCollaborators;
+    
+        // Guardar los cambios en la base de datos
+        await this.projectRepository.save(project);
+    }
+    
 
     async getProject(id: number) {
         const projectFound = await this.projectRepository.findOne({where: { id }})
@@ -75,7 +105,7 @@ export class ProjectService {
     }
 
     async getProjectByUser(userName: string) {
-        const user = await this.projectRepository.findOne({where: { userName }});
+        const user = await this.projectRepository.find({where: { userName }});
     
         if (!user) {
             throw new HttpException(`User with name: ${userName} not found`, HttpStatus.NOT_FOUND);

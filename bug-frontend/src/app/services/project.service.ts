@@ -36,4 +36,8 @@ export class ProjectService {
   deleteProject(projectName: string): Observable<any> {
     return this.http.delete(`${this.APPUrl}${this.APIUrl}/deleteProject/${projectName}`)
   }
+
+  deleteCollaboratorFromProject(project: Project): Observable<any> {
+    return this.http.patch(`${this.APPUrl}${this.APIUrl}/deleteCollaboratorFromProject`, project)
+  }
 }
