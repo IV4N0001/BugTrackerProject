@@ -21,10 +21,12 @@ export class ProjectsComponent {
   showCollaboratorForm: boolean = false;
   showDeleteProjectForm: boolean = false;
   showDeleteCollaboratorForm: boolean = false;
+  showChangeCategoryForm: boolean = false;
   projectForm: FormGroup;
   collaboratorForm: FormGroup;
   deleteProjectForm: FormGroup;
   deleteCollaboratorForm: FormGroup;
+  //changeCategoryForm: FormGroup;
   currentPage = 1;
   itemsPerPage = 4; // 2 rows of 4 columns
 
@@ -53,9 +55,10 @@ export class ProjectsComponent {
     });
 
     this.deleteCollaboratorForm = this.fb.group({
-      userSearch: ['', Validators.required],
       project: ['', Validators.required],
+      userSearch: ['', Validators.required],
     })
+
   }
 
   ngOnInit(): void {
@@ -68,6 +71,7 @@ export class ProjectsComponent {
     this.showCollaboratorForm = false;
     this.showDeleteProjectForm = false;
     this.showDeleteCollaboratorForm = false;
+    this.showChangeCategoryForm = false;
   }
 
   toogleCollaboratorForm() {
@@ -75,6 +79,7 @@ export class ProjectsComponent {
     this.showProjectForm = false;
     this.showDeleteProjectForm = false;
     this.showDeleteCollaboratorForm = false;
+    this.showChangeCategoryForm = false;
   }
 
   toogleDeleteProjectForm() {
@@ -82,6 +87,7 @@ export class ProjectsComponent {
     this.showCollaboratorForm = false;
     this.showProjectForm = false;
     this.showDeleteCollaboratorForm = false;
+    this.showChangeCategoryForm = false;
   }
 
   toogleDeleteCollaboratorForm() {
@@ -89,12 +95,21 @@ export class ProjectsComponent {
     this.showCollaboratorForm = false;
     this.showProjectForm = false;
     this.showDeleteProjectForm = false;
+    this.showChangeCategoryForm = false;
   }
   
+  toogleChangeCategoryForm() {
+    this.showChangeCategoryForm = !this.showChangeCategoryForm;
+    this.showCollaboratorForm = false;
+    this.showProjectForm = false;
+    this.showDeleteProjectForm = false;
+    this.showDeleteCollaboratorForm = false
+  }
+
   private loadProjects() {
     this.projectService.getProjects().subscribe(
       (data: Project[]) => {
-        console.log(data);
+        //console.log(data);
         this.projects = data;
       },
       (error) => {
@@ -151,11 +166,10 @@ export class ProjectsComponent {
   }
 
 // projects.component.ts
-
   addCollaborator() {
     if (this.collaboratorForm.valid) {
       const collaboratorData = {
-        name: this.collaboratorForm.value.project, // asumo que 'project' contiene el nombre del proyecto
+        name: this.collaboratorForm.value.project,
         collaborator: this.collaboratorForm.value.userSearch,
         role: this.collaboratorForm.value.role
       };
@@ -165,11 +179,7 @@ export class ProjectsComponent {
         next: (v) => {
           this.loading = false;
           this.toastr.success('Colaborador agregado con éxito!', 'Colaborador Agregado');
-          console.log([collaboratorData]);
-          // Puedes realizar alguna acción adicional después de agregar el colaborador
-          // Por ejemplo, recargar la lista de proyectos
           this.loadProjects();
-          // Restablece el formulario después de agregar el colaborador
           this.collaboratorForm.reset();
         },
         error: (e: HttpErrorResponse) => {
@@ -214,21 +224,16 @@ export class ProjectsComponent {
   deleteCollaborator() {
     if (this.deleteCollaboratorForm.valid) {
       const deleteCollaboratorData = {
-        collaborator: this.deleteCollaboratorForm.value.userSearch,
-        name: this.deleteCollaboratorForm.value.project, // Obtén el nombre del proyecto del formulario de eliminación
+        projectName: this.deleteCollaboratorForm.value.project,
+        collaboratorName: this.deleteCollaboratorForm.value.userSearch,
       };
-  
-      console.log([deleteCollaboratorData]);
-      // Lógica para eliminar el colaborador del proyecto
+
+      console.log(deleteCollaboratorData)
       this.projectService.deleteCollaboratorFromProject(deleteCollaboratorData).subscribe({
         next: (v) => {
           this.loading = false;
           this.toastr.success('Colaborador eliminado con éxito!', 'Colaborador Eliminado');
-          console.log([deleteCollaboratorData]);
-          // Puedes realizar alguna acción adicional después de eliminar el colaborador
-          // Por ejemplo, recargar la lista de proyectos
           this.loadProjects();
-          // Restablece el formulario después de eliminar el colaborador
           this.deleteCollaboratorForm.reset();
         },
         error: (e: HttpErrorResponse) => {
@@ -239,6 +244,10 @@ export class ProjectsComponent {
     } else {
       this.toastr.error('No deje ningún campo sin llenar!', 'Error');
     }
+  }
+
+  changeCategory() {
+
   }
   
 }

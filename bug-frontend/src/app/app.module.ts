@@ -19,6 +19,8 @@ import { BugsComponent } from './components/bugs/bugs.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { AngularDraggableModule } from 'angular2-draggable';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTooltipModule,
+    AngularDraggableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

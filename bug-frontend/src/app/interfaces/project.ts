@@ -13,6 +13,12 @@ export interface Project {
     category?: category
     collaborators?: string[]
     role?: string
-    projectName?: string
-    collaboratorName?: string
+    projectName?: string;
+    collaboratorName?: string;
 }
+/*
+export interface DeleteCollaborator {
+    projectName: string
+    collaboratorName: string
+}
+*/

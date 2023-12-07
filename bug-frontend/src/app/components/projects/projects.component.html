@@ -1,15 +1,18 @@
 <h1>Projects</h1>
-<button mat-fab class="add-project-button" (click)="toogleProjectForm()">
+<button mat-fab class="add-project-button" (click)="toogleProjectForm()" matTooltip="Add Project">
     <mat-icon>add</mat-icon>
 </button>
-<button mat-fab class="add-collaborator-button" (click)="toogleCollaboratorForm()">
+<button mat-fab class="add-collaborator-button" (click)="toogleCollaboratorForm()" matTooltip="Add Collaborator">
     <mat-icon>person_add</mat-icon>
 </button>
-<button mat-fab class="delete-project-button" (click)="toogleDeleteProjectForm()">
+<button mat-fab class="delete-project-button" (click)="toogleDeleteProjectForm()" matTooltip="Delete Project">
     <mat-icon>delete_forever</mat-icon>
 </button>
-<button mat-fab class="delete-collaborator-button" (click)="toogleDeleteCollaboratorForm()">
-    <mat-icon>clear</mat-icon>
+<button mat-fab class="delete-collaborator-button" (click)="toogleDeleteCollaboratorForm()" matTooltip="Eliminate Collaborator From Project">
+    <mat-icon>remove_circle_outline</mat-icon>
+</button>
+<button mat-fab class="change-category-button" (click)="toogleChangeCategoryForm()" matTooltip="Change Category From Project">
+    <mat-icon>ballot</mat-icon>
 </button>
 <div *ngIf="projects.length > 0" class="row">
     <div *ngFor="let project of projects.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)" class="card">
@@ -29,7 +32,7 @@
     </div>
 </div>
 <mat-paginator [pageSize]="itemsPerPage" [length]="projects.length" (page)="onPageChange($event)" showFirstLastButtons class="mat-paginator"></mat-paginator>
-<div *ngIf="showProjectForm" id="projectForm" class="project-form-container">
+<div *ngIf="showProjectForm" id="projectForm" class="project-form-container" [ngDraggable]="true">
     <button class="close-button" (click)="toogleProjectForm()">X</button>
     <form (submit)="createProject()" [formGroup]="projectForm">
         <label for="name">Name Project</label>
@@ -55,7 +58,7 @@
     </form>
     <app-spinner *ngIf="loading"></app-spinner>
 </div>
-<div *ngIf="showCollaboratorForm" id="collaboratorForm" class="collaborator-form-container">
+<div *ngIf="showCollaboratorForm" id="collaboratorForm" class="collaborator-form-container" [ngDraggable]="true">
     <button class="close-button" (click)="toogleCollaboratorForm()">X</button>
     <form (submit)="addCollaborator()" [formGroup]="collaboratorForm">
         <label for="userSearch">Search User</label>
@@ -80,7 +83,7 @@
     </form>
     <app-spinner *ngIf="loading"></app-spinner>
 </div>
-<div *ngIf="showDeleteProjectForm" id="deleteProjectForm" class="deleteProject-form-container">
+<div *ngIf="showDeleteProjectForm" id="deleteProjectForm" class="deleteProject-form-container" [ngDraggable]="true">
     <button class="close-button" (click)="toogleDeleteProjectForm()">X</button>
     <form (submit)="deleteProject()" [formGroup]="deleteProjectForm">
         <label for="userSearch">Search User</label>
@@ -98,7 +101,7 @@
     </form>
     <app-spinner *ngIf="loading"></app-spinner>
 </div>
-<div *ngIf="showDeleteCollaboratorForm" id="deleteCollaboratorForm" class="deleteCollaborator-form-container">
+<div *ngIf="showDeleteCollaboratorForm" id="deleteCollaboratorForm" class="deleteCollaborator-form-container" [ngDraggable]="true">
     <button class="close-button" (click)="toogleDeleteCollaboratorForm()">X</button>
     <form (submit)="deleteCollaborator()" [formGroup]="deleteCollaboratorForm">
         <label for="userSearch">Search User</label>
@@ -108,7 +111,6 @@
         </datalist>
         <label for="project">Project</label>
         <select id="project" name="project" formControlName="project" required>
-            <!-- Cambiado project.id a project.name -->
             <option *ngFor="let project of projects" [value]="project.name">{{ project.name }}</option>
         </select>
     
