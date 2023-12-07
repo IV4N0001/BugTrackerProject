@@ -86,11 +86,6 @@
 <div *ngIf="showDeleteProjectForm" id="deleteProjectForm" class="deleteProject-form-container" [ngDraggable]="true">
     <button class="close-button" (click)="toogleDeleteProjectForm()">X</button>
     <form (submit)="deleteProject()" [formGroup]="deleteProjectForm">
-        <label for="userSearch">Search User</label>
-        <input type="text" id="userSearch" name="userSearch" formControlName="userSearch" list="usersList" required>
-        <datalist id="usersList">
-            <option *ngFor="let user of users" [value]="user.userName">{{ user.userName }}</option>
-        </datalist>
         <label for="project">Project</label>
         <select id="project" name="project" formControlName="project" required>
             <!-- Cambiado project.id a project.name -->
