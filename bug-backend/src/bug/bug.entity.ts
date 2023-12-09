@@ -45,12 +45,6 @@ export class bug {
     @Column()
     severity: severity
 
-    @Column()
-    userName: string
-
-    @Column()
-    ProjectName: string
-
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date
 

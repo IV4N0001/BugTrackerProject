@@ -28,7 +28,7 @@ export class BugService {
     }
 
     async getBugs() {
-        return this.bugRepository.find();
+        return this.bugRepository.find({ relations: ['user'] });    
     }
 
     async getBug(id: number) {
