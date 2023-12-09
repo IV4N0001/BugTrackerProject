@@ -7,7 +7,8 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToMa
 export enum role {
     administrator = 'ADMINISTRATOR',
     developer = 'DEVELOPER',
-    tester = 'TESTER'
+    reporter = 'REPORTER',
+    evaluator = 'EVALUATOR'
 }
 
 @Entity()

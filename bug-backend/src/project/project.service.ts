@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository  } from 'typeorm';
+import { Repository } from 'typeorm';
 import { project } from './project.entity';
 import { CreateProjectDto } from './dto/createProjectDto';
 import { UpdateProjectDto } from './dto/updateProjectDto';
@@ -11,7 +11,6 @@ import { AddCollaborator } from './dto/addCollaboratorDto';
 import { UserService } from 'src/user/user.service';
 import { user } from 'src/user/user.entity';
 import { MailerService } from 'src/mailer/mailer.service';
-import { DeleteCollaborator } from './dto/deleteCollaboratorDto';
 
 @Injectable()
 export class ProjectService {
@@ -31,9 +30,9 @@ export class ProjectService {
     
         const user = await this.userRepository.findOne({ where: { userName: project.userName } });
     
-        /*if (!user) {
+        if (!user) {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-        }*/
+        }
     
         // Asociar el usuario al proyecto y guardar el proyecto nuevamente
         const newProject = this.projectRepository.create({
@@ -50,41 +49,6 @@ export class ProjectService {
         const project = await this.projectRepository.find()
         return project;
     }
-    
-    async getAllCollaborators() {
-        const projects = await this.projectRepository.find();
-        const collaboratorsWithDetails = projects.flatMap((project) =>
-            project.collaborators.map((collaborator) => ({
-                collaborator: collaborator.collaborator,
-                project: project.name, // Cambia esto si el nombre del proyecto está en otro campo
-                role: collaborator.role,
-            })),
-        );
-        return collaboratorsWithDetails;
-    }
-
-    async deleteCollaboratorFromProject(deleteCollaborator: DeleteCollaborator): Promise<void> {
-        const { projectName, collaboratorName } = deleteCollaborator;
-    
-        // Buscar el proyecto por nombre
-        const project = await this.projectRepository.findOne({ where: { name: projectName } });
-    
-        if (!project) {
-            throw new HttpException(`Project with name: ${projectName} not found`, HttpStatus.NOT_FOUND);
-        }
-    
-        // Filtrar la lista de colaboradores para excluir al colaborador que se va a eliminar
-        const updatedCollaborators = project.collaborators.filter(
-            (collaborator) => collaborator.collaborator !== collaboratorName,
-        );
-    
-        // Actualizar la lista de colaboradores del proyecto con la nueva lista filtrada
-        project.collaborators = updatedCollaborators;
-    
-        // Guardar los cambios en la base de datos
-        await this.projectRepository.save(project);
-    }
-    
 
     async getProject(id: number) {
         const projectFound = await this.projectRepository.findOne({where: { id }})
@@ -105,13 +69,13 @@ export class ProjectService {
     }
 
     async getProjectByUser(userName: string) {
-        const user = await this.projectRepository.find({where: { userName }});
+        const project = await this.projectRepository.find({where: { userName }});
     
-        if (!user) {
+        if (!project) {
             throw new HttpException(`User with name: ${userName} not found`, HttpStatus.NOT_FOUND);
         }
     
-        return user;
+        return project;
     }    
 
     public async getCollaboratorByProject(name: string) {
@@ -124,8 +88,8 @@ export class ProjectService {
         return projectCollaborators
     }
 
-    async deleteProject(name: string) {
-        const result = await this.projectRepository.delete({ name })
+    async deleteProject(id: number) {
+        const result = await this.projectRepository.delete({ id })
 
         if(result.affected === 0) {
             return new HttpException('Project not found', HttpStatus.NOT_FOUND);
@@ -162,21 +126,17 @@ export class ProjectService {
     }
     
     async addCollaborator(addCollaborator: AddCollaborator) {
-        const { name, collaborator, role } = addCollaborator;
-        const project: project = await this.getProjectByName(name);
-        const user: user = await this.userService.getUserByUsername(collaborator);
-
+        const { name, collaborator } = addCollaborator
+        const project: project = await this.getProjectByName(name)
+        const user: user = await this.userService.getUserByUsername(collaborator)
+        
         if (!project.collaborators) {
             project.collaborators = [];
         }
-
-        const existingCollaborator = project.collaborators.find((c) => c.collaborator === user.userName);
-
-        if (!existingCollaborator) {
-            // Agrega el nuevo colaborador al proyecto con su rol
-            const newCollaborator = { name, collaborator: user.userName, role };
-            project.collaborators.push(newCollaborator);
-
+    
+        if (!project.collaborators.includes(user.userName)) {
+            project.collaborators.push(user.userName);
+    
             await this.projectRepository.save(project);
         }
     }

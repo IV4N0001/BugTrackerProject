@@ -41,6 +41,6 @@ export class project {
 
     //@ManyToMany(() => user, user => user.projects_collaborations)
     //@JoinTable()
-    @Column('simple-json', { nullable: true})
-    collaborators: { name: string; collaborator: string; role: string }[];
+    @Column('simple-array', { nullable: true})
+    collaborators: string[];
 }

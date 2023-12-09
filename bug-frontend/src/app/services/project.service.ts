@@ -29,15 +29,8 @@ export class ProjectService {
     return this.http.post(`${this.APPUrl}${this.APIUrl}/createProject`, project)
   }
   
-  addCollaborator(project: Project): Observable<any> {
-    return this.http.patch(`${this.APPUrl}${this.APIUrl}/addCollaborator`, project)
-  }
+  /*sign(user: User): Observable<any> {
+    return this.http.post(`${this.APPUrl}${this.APIUrl}/createUser`, user)
+  }*/
 
-  deleteProject(projectName: string): Observable<any> {
-    return this.http.delete(`${this.APPUrl}${this.APIUrl}/deleteProject/${projectName}`)
-  }
-
-  deleteCollaboratorFromProject(project: Project): Observable<any> {
-    return this.http.patch(`${this.APPUrl}${this.APIUrl}/deleteCollaboratorFromProject`, project)
-  }
 }

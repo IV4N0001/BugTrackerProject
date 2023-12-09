@@ -7,17 +7,11 @@ import { ChangeDescription } from './dto/changedescriptionDto';
 import { ChangeDateCompletion } from './dto/changeDateCompletionDto';
 import { ChangeCategory } from './dto/changeCategoryDto';
 import { AddCollaborator } from './dto/addCollaboratorDto';
-import { DeleteCollaborator } from './dto/deleteCollaboratorDto';
 
 @Controller('project')
 export class ProjectController {
     constructor(private projectService: ProjectService) {}
 
-    @Get('getAllCollaborators')
-    async getAllCollaborators() {
-        return await this.projectService.getAllCollaborators();
-    }    
-    
     @Get()
     getProjects(): Promise<project[]> {
         return this.projectService.getProjects();
@@ -33,20 +27,15 @@ export class ProjectController {
         return this.projectService.getProjectByUser(userName);
     }
     
-    @Post('createProject')
+    @Patch('createProject')
     createProject(@Body() newProject: CreateProjectDto) {
         this.projectService.createProject(newProject);
     }
 
-    @Delete('deleteProject/:name')
-    deleteProject(@Param('name') name: string) {
-        return this.projectService.deleteProject(name);
+    @Delete(':id')
+    deleteProject(@Param('id', ParseIntPipe) id: number) {
+        return this.projectService.deleteProject(id);
     }
-
-    @Patch('deleteCollaboratorFromProject')
-    deleteCollaboratorFromProject(@Body() deleteCollaboratorFromProject: DeleteCollaborator) {
-        return this.projectService.deleteCollaboratorFromProject(deleteCollaboratorFromProject);
-    }    
 
     @Patch('changeDescription')
     changeDescription(@Body() changeDescription: ChangeDescription) {

@@ -33,8 +33,4 @@ export class UserService {
   restorePwd(user: User): Observable<any> {
     return this.http.patch(`${this.APPUrl}${this.APIUrl}/restorePwd`, user)
   }
-
-  getUsers(): Observable<any> {
-    return this.http.get(`${this.APPUrl}${this.APIUrl}`)
-  }
 }

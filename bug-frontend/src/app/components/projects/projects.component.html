@@ -1,39 +1,21 @@
 <h1>Projects</h1>
-<button mat-fab class="add-project-button" (click)="toogleProjectForm()" matTooltip="Add Project">
+<button mat-fab class="add-project-button" (click)="openProjectForm()">
     <mat-icon>add</mat-icon>
 </button>
-<button mat-fab class="add-collaborator-button" (click)="toogleCollaboratorForm()" matTooltip="Add Collaborator">
-    <mat-icon>person_add</mat-icon>
-</button>
-<button mat-fab class="delete-project-button" (click)="toogleDeleteProjectForm()" matTooltip="Delete Project">
-    <mat-icon>delete_forever</mat-icon>
-</button>
-<button mat-fab class="delete-collaborator-button" (click)="toogleDeleteCollaboratorForm()" matTooltip="Eliminate Collaborator From Project">
-    <mat-icon>remove_circle_outline</mat-icon>
-</button>
-<button mat-fab class="change-category-button" (click)="toogleChangeCategoryForm()" matTooltip="Change Category From Project">
-    <mat-icon>ballot</mat-icon>
-</button>
-<div *ngIf="projects.length > 0" class="row">
-    <div *ngFor="let project of projects.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)" class="card">
-        <div class="card-head">Name: {{ project.name }}</div>
-            <div class="card-body">
-                <p>Author: {{ project.userName}}</p>
-                <p>Description: {{ project.description }}</p>
-                <p>Category: {{ project.category }}</p>
-                <p>Created At: {{ project.createdAt | date:'medium' }}</p>
-                <p>Expected Completion At: {{ project.expectedCompletionAt | date:'medium' }}</p>
-                <p>Category: {{ project.category}}</p>
-                <div *ngFor="let collaborator of project.collaborators">
-                    <p>Collaborator's:</p>
-                    <p>{{ collaborator.collaborator }} - Role: {{ collaborator.role }}</p>
-                </div>
-            </div>
+<div *ngFor="let project of projects" class="card">
+    <div class="card-head">Name: {{ project.name }}</div>
+    <div class="card-body">
+        <p>Description: {{ project.description }}</p>
+        <p>Category: {{ project.category }}</p>
+        <p>Created At: {{ project.createdAt | date:'medium' }}</p>
+        <p>Expected Completion At: {{ project.expectedCompletionAt | date:'medium' }}</p>
+    
+        <!-- Verifica si collaborators es null antes de mostrarlo -->
+        <p *ngIf="project.collaborators !== null">Collaborators: {{ project.collaborators }}</p>
     </div>
 </div>
-<mat-paginator [pageSize]="itemsPerPage" [length]="projects.length" (page)="onPageChange($event)" showFirstLastButtons class="mat-paginator"></mat-paginator>
-<div *ngIf="showProjectForm" id="projectForm" class="project-form-container" [ngDraggable]="true">
-    <button class="close-button" (click)="toogleProjectForm()">X</button>
+<div *ngIf="showProjectForm" id="projectForm" class="project-form-container">
+    <button class="close-button" (click)="closeProjectForm()">X</button>
     <form (submit)="createProject()" [formGroup]="projectForm">
         <label for="name">Name Project</label>
         <input type="text" id="name" name="name" formControlName="name" required>
@@ -58,61 +40,3 @@
     </form>
     <app-spinner *ngIf="loading"></app-spinner>
 </div>
-<div *ngIf="showCollaboratorForm" id="collaboratorForm" class="collaborator-form-container" [ngDraggable]="true">
-    <button class="close-button" (click)="toogleCollaboratorForm()">X</button>
-    <form (submit)="addCollaborator()" [formGroup]="collaboratorForm">
-        <label for="userSearch">Search User</label>
-        <input type="text" id="userSearch" name="userSearch" formControlName="userSearch" list="usersList" required>
-        <datalist id="usersList">
-            <option *ngFor="let user of users" [value]="user.userName">{{ user.userName }}</option>
-        </datalist>
-
-        <label for="role">Role</label>
-        <select id="role" name="role" formControlName="role" required>
-            <option value="ADMINISTRATOR">ADMINISTRATOR</option>
-            <option value="DEVELOPER">DEVELOPER</option>
-            <option value="TESTER">TESTER</option>
-        </select>
-
-        <label for="project">Project</label>
-        <select id="project" name="project" formControlName="project" required>
-            <option *ngFor="let project of projects" [value]="project.name">{{ project.name }}</option>
-        </select>
-    
-        <button type="submit" class="add-collaborator-btn">Add Collaborator</button>
-    </form>
-    <app-spinner *ngIf="loading"></app-spinner>
-</div>
-<div *ngIf="showDeleteProjectForm" id="deleteProjectForm" class="deleteProject-form-container" [ngDraggable]="true">
-    <button class="close-button" (click)="toogleDeleteProjectForm()">X</button>
-    <form (submit)="deleteProject()" [formGroup]="deleteProjectForm">
-        <label for="project">Project</label>
-        <select id="project" name="project" formControlName="project" required>
-            <!-- Cambiado project.id a project.name -->
-            <option *ngFor="let project of projects" [value]="project.name">{{ project.name }}</option>
-        </select>
-    
-        <button type="submit" class="delete-project-btn">Delete Project</button>
-    </form>
-    <app-spinner *ngIf="loading"></app-spinner>
-</div>
-<div *ngIf="showDeleteCollaboratorForm" id="deleteCollaboratorForm" class="deleteCollaborator-form-container" [ngDraggable]="true">
-    <button class="close-button" (click)="toogleDeleteCollaboratorForm()">X</button>
-    <form (submit)="deleteCollaborator()" [formGroup]="deleteCollaboratorForm">
-        <label for="userSearch">Search User</label>
-        <input type="text" id="userSearch" name="userSearch" formControlName="userSearch" list="usersList" required>
-        <datalist id="usersList">
-            <option *ngFor="let user of users" [value]="user.userName">{{ user.userName }}</option>
-        </datalist>
-        <label for="project">Project</label>
-        <select id="project" name="project" formControlName="project" required>
-            <option *ngFor="let project of projects" [value]="project.name">{{ project.name }}</option>
-        </select>
-    
-        <button type="submit" class="delete-collaborator-btn">Delete Collaborator From Project</button>
-    </form>
-    <app-spinner *ngIf="loading"></app-spinner>
-</div>
-
-
-
