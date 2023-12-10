@@ -7,7 +7,6 @@ import { JwtService } from '@nestjs/jwt';
 import { RequestPassword } from './dto/requestPasswordDto';
 import { RestorePassword } from './dto/restorePasswordDto';
 import { NewPassword } from './dto/newPasswordDto';
-import { ChangeRole } from './dto/changeRoleDto';
 import { ChangeEmail } from './dto/changeEmailDto';
 import { JoinProject } from './dto/joinProjectDto';
 
@@ -74,11 +73,6 @@ export class UserController {
     @Patch('changePwd')
     newPassword(@Body() newPassword: NewPassword) {
         return this.userService.newPassword(newPassword);
-    }
-
-    @Patch('changeRole')
-    changeRole(@Body() changeRole: ChangeRole) {
-        return this.userService.changeRole(changeRole)
     }
 
     @Patch('changeEmail')

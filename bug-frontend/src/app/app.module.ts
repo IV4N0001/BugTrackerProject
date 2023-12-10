@@ -21,6 +21,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularDraggableModule } from 'angular2-draggable';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,9 @@ import { AngularDraggableModule } from 'angular2-draggable';
     ReactiveFormsModule,
     MatPaginatorModule,
     MatTooltipModule,
-    AngularDraggableModule
+    AngularDraggableModule,
+    NgxChartsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

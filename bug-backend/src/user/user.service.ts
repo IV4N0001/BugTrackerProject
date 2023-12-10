@@ -10,7 +10,6 @@ import { v4 } from 'uuid';
 import { RestorePassword } from './dto/restorePasswordDto';
 import { MailerService } from 'src/mailer/mailer.service';
 import { NewPassword } from './dto/newPasswordDto';
-import { ChangeRole } from './dto/changeRoleDto';
 import { ChangeEmail } from './dto/changeEmailDto';
 import { ProjectService } from 'src/project/project.service';
 import { JoinProject } from './dto/joinProjectDto';
@@ -191,14 +190,6 @@ export class UserService {
         return this.userRepository.save(updateUser);
     }
 
-    async changeRole(changeRole: ChangeRole) {
-        const { userName, role } = changeRole
-        const user: user = await this.getUserByUsername(userName)
-
-        user.role = role
-
-        await this.userRepository.save(user)
-    }
 
     async changeEmail(changeEmail: ChangeEmail) {
         const { email, newEmail } = changeEmail

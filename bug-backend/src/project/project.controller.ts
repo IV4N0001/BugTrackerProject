@@ -8,6 +8,7 @@ import { ChangeDateCompletion } from './dto/changeDateCompletionDto';
 import { ChangeCategory } from './dto/changeCategoryDto';
 import { AddCollaborator } from './dto/addCollaboratorDto';
 import { DeleteCollaborator } from './dto/deleteCollaboratorDto';
+import { ChangeRole } from './dto/changeRoleDto';
 
 @Controller('project')
 export class ProjectController {
@@ -17,7 +18,12 @@ export class ProjectController {
     async getAllCollaborators() {
         return await this.projectService.getAllCollaborators();
     }    
-    
+
+    @Get('getProjectsForUserAndCollaborations/:userName')
+    getProjectsForUserAndCollaborations(@Param('userName') userName: string) {
+        return this.projectService.getProjectsForUserAndCollaborations(userName);
+    }
+
     @Get()
     getProjects(): Promise<project[]> {
         return this.projectService.getProjects();
@@ -66,6 +72,11 @@ export class ProjectController {
     @Patch('addCollaborator')
     addColaborator(@Body() addColaborator: AddCollaborator) {
         return this.projectService.addCollaborator(addColaborator)
+    }
+
+    @Patch('changeRole')
+    changeRole(@Body() changeRole: ChangeRole) {
+        return this.projectService.changeRole(changeRole)
     }
 
     @Patch()

@@ -19,9 +19,6 @@ export class ProjectService {
 
   getProjects(): Observable<any> {
     const userName = localStorage.getItem('userName');
-
-    console.log(`${this.APPUrl}${this.APIUrl}/getByUser/${userName}`)
-
     return this.http.get(`${this.APPUrl}${this.APIUrl}/getByUser/${userName}`);
   }
 
@@ -40,4 +37,18 @@ export class ProjectService {
   deleteCollaboratorFromProject(project: Project): Observable<any> {
     return this.http.patch(`${this.APPUrl}${this.APIUrl}/deleteCollaboratorFromProject`, project)
   }
+
+  changeCategory(project: Project): Observable<any> {
+    return this.http.patch(`${this.APPUrl}${this.APIUrl}/changeCategory`, project)
+  }
+
+  changeRole(project: Project): Observable<any> {
+    return this.http.patch(`${this.APPUrl}${this.APIUrl}/changeRole`, project)
+  }
+
+  getProjectsForUserAndCollaborations(): Observable<any> {
+    const userName = localStorage.getItem('userName');
+    return this.http.get(`${this.APPUrl}${this.APIUrl}/getProjectsForUserAndCollaborations/${userName}`);
+  }
+
 }

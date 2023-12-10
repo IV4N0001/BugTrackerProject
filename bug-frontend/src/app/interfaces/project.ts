@@ -15,6 +15,8 @@ export interface Project {
     role?: string
     projectName?: string;
     collaboratorName?: string;
+    newCategory?: string;
+    newRole?: string
 }
 /*
 export interface DeleteCollaborator {

@@ -12,6 +12,7 @@ import { UserService } from 'src/user/user.service';
 import { user } from 'src/user/user.entity';
 import { MailerService } from 'src/mailer/mailer.service';
 import { DeleteCollaborator } from './dto/deleteCollaboratorDto';
+import { ChangeRole } from './dto/changeRoleDto';
 
 @Injectable()
 export class ProjectService {
@@ -44,8 +45,6 @@ export class ProjectService {
         await this.projectRepository.save(newProject);
     }
     
-    
-
     async getProjects() {
         const project = await this.projectRepository.find()
         return project;
@@ -114,6 +113,27 @@ export class ProjectService {
         return user;
     }    
 
+// project.service.ts
+
+    async getProjectsForUserAndCollaborations(username: string): Promise<project[]> {
+        const userProjects = await this.projectRepository.find({
+        where: { userName: username },
+        });
+    
+        const collaboratedProjects = await this.projectRepository
+        .createQueryBuilder('project')
+        .where(`project.collaborators LIKE :username`, { username: `%${username}%` })
+        .getMany();
+    
+        // Combinar y eliminar duplicados (si es necesario)
+        const allProjects = [...userProjects, ...collaboratedProjects];
+        const uniqueProjects = Array.from(new Set(allProjects.map(project => project.id))).map(id => {
+        return allProjects.find(project => project.id === id);
+        });
+    
+        return uniqueProjects;
+    }
+
     public async getCollaboratorByProject(name: string) {
         const projectCollaborators: project = await this.getProjectByName(name)
 
@@ -159,6 +179,19 @@ export class ProjectService {
         project.category = newCategory
 
         await this.projectRepository.save(project)
+    }
+
+    async changeRole(changeRole: ChangeRole): Promise<void> {
+        const { projectName, collaboratorName, newRole } = changeRole;
+        const projectEntity = await this.projectRepository.findOne({ where: { name: projectName } });
+
+        if (!projectEntity) {
+            throw new HttpException(`Project with name: ${projectName} not found`, HttpStatus.NOT_FOUND);
+        }
+
+        const collaboratorIndex = projectEntity.collaborators.findIndex(
+            (c) => c.collaborator === collaboratorName,
+        );
     }
     
     async addCollaborator(addCollaborator: AddCollaborator) {
