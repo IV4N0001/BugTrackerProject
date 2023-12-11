@@ -18,10 +18,15 @@ export class BugController {
     getUsers(): Promise<bug[]> {
         return this.bugService.getBugs();
     }
-
+    
     @Get(':id')
     getBug(@Param('id', ParseIntPipe) id: number) {
         return this.bugService.getBug(id);
+    }
+
+    @Get('name/:bugname')
+    getBugByName(@Param('bugname') name: string) {
+        return this.bugService.getBugByName(name);
     }
 
     @Post('createBug')

@@ -1,17 +1,16 @@
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-        <a class="navbar-brand" href="#">BugTracker</a>
+        <a class="navbar-brand" routerLink="/dashboard">BugTracker</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
             </ul>
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchBar">
-            <button class="icon-button" (click)="SearchButtonClick()">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchBar" #searchBar>
+            <button class="icon-button" (click)="SearchButtonClick(searchBar.value)">
                 <i class="fas fa-search"></i>
             </button>
         </div>
@@ -26,9 +25,9 @@
                     Category:
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Open</a>
-                    <a class="dropdown-item" href="#">Resolved</a>
-                    <a class="dropdown-item" href="#">Closed</a>
+                    <a class="dropdown-item" (click)="BUGOPEN('OPEN')">OPEN</a>
+                    <a class="dropdown-item" (click)="RESOLVED('RESOLVED')">RESOLVED</a>
+                    <a class="dropdown-item" (click)="CLOSED('CLOSED')">CLOSED</a>
                 </div>
             </div>
         </div>
@@ -40,7 +39,7 @@
         <!-- Formulario -->
           <div *ngIf="showBugForm" class="bug-form-container">
             <button class="close-button" (click)="closeBugForm()">X</button>
-            <form (submit)="submitBugForm()" [formGroup]="bugForm">
+            <form (submit)="submitBugForm()" [formGroup]="bugForm" enctype="multipart/form-data">
             <!-- Campos del formulario -->
             <label for="name">Bug Name:</label>
             <input type="text" id="name" formControlName="name" required>
@@ -52,15 +51,13 @@
             <textarea id="description" formControlName="description" required></textarea>
 
             <label for="opciones">State:</label>
-            <select id="opciones" name="opciones" formControlName="selectedOptionState" required>
+            <select id="opcionesstate" name="opcionesstate" formControlName="selectedOptionState" required>
             <option value="" disabled selected>Select a option</option>
-            <option value="Open">Open</option>
-            <option value="Resolved">Resolved</option>
-            <option value="Closed">Closed</option>
+            <option value="OPEN">OPEN</option>
             </select>
 
             <label for="opciones">Priority:</label>
-            <select id="opciones" name="opciones" formControlName="selectedOptionPriority" required>
+            <select id="opcionespriority" name="opcionespriority" formControlName="selectedOptionPriority" required>
             <option value="" disabled selected>Select a option</option>
             <option value="LOW">LOW</option>
             <option value="MEDIUM">MEDIUM</option>
@@ -68,7 +65,7 @@
             </select>
 
             <label for="opciones">Severity:</label>
-            <select id="opciones" name="opciones" formControlName="selectedOptionSeverity" required>
+            <select id="opcionesseverity" name="opcionesseverity" formControlName="selectedOptionSeverity" required>
             <option value="" disabled selected>Select a option</option>
             <option value="LOW">LOW</option>
             <option value="MEDIUM">MEDIUM</option>
@@ -88,13 +85,13 @@
             <select id="opciones" name="opciones" formControlName="selectedOptionColaborations" required>
                 <option value="" disabled selected></option>
                 <option *ngFor="let collaborator of bugForm.get('selectedOptionColaborations')?.value" [value]="collaborator">{{ collaborator }}</option>
-            </select>                   
+            </select>
 
-            <button type="submit" class="submit-bug-btn">Upload File</button>
+            <label for="image">Select Image:</label>
+            <input type="file" id="image" (change)="onFileChange($event)" formControlName="image" accept="image/*">
 
-            <label>File to update:</label>
 
-            <button type="submit" class="submit-bug-btn">Submit Bug</button>
+            <button type="submit" class="submit-bug-btn" [disabled]="bugForm.invalid || !bugForm.get('selectedOptionColaborations')?.value || !collaboratorsAvailable()" [ngStyle]="{'background-color': bugForm.invalid || !bugForm.get('selectedOptionColaborations')?.value || !collaboratorsAvailable() ? 'gray' : buttonColor}">Submit Bug</button>
             </form>
         </div>
     </div>
@@ -114,12 +111,12 @@
         </thead>
         <tbody>
             <tr *ngFor="let bug of bugs">
-                <td>{{ bug.name }}</td>
-                <td>{{bug.ProjectName}}</td>
-                <td>{{ bug.userName }}</td>
-                <td>{{ bug.state }}</td>
-                <td>{{ bug.severity }}</td>
-                <td>{{ bug.createdAt | date:'dd/MM/yyyy'}}</td>
+                <td (click)="navigateToBugDetails(bug.name)">{{ bug.name }}</td>
+                <td (click)="navigateToBugDetails(bug.name)">{{bug.ProjectName}}</td>
+                <td (click)="navigateToBugDetails(bug.name)">{{ bug.userName }}</td>
+                <td (click)="navigateToBugDetails(bug.name)">{{ bug.state }}</td>
+                <td (click)="navigateToBugDetails(bug.name)">{{ bug.severity }}</td>
+                <td (click)="navigateToBugDetails(bug.name)">{{ bug.createdAt | date:'dd/MM/yyyy'}}</td>
             </tr>
         </tbody>
         </table>

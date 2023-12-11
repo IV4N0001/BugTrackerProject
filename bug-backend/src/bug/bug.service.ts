@@ -21,8 +21,9 @@ export class BugService {
         @InjectRepository(bug) private bugRepository: Repository<bug>) {
 
     }
-
+    
     async createBug(bug: CreateBugDto) {
+        console.log("datos recibidos", bug)
         const newBug = this.bugRepository.create(bug);
         this.bugRepository.save(newBug);
     }
@@ -38,7 +39,7 @@ export class BugService {
             return new HttpException('Bug not found', HttpStatus.NOT_FOUND);
         }
     }
-
+    
     async getBugByName(name: string) {
         const bugName = await this.bugRepository.findOne({where: { name }})
 
@@ -124,4 +125,5 @@ export class BugService {
         const updateBug = Object.assign(bugFound, bug);
         return this.bugRepository.save(updateBug);
     }
+    
 }

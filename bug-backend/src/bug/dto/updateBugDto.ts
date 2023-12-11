@@ -33,4 +33,8 @@ export class UpdateBugDto {
 
     @IsNotEmpty()
     project?: project
+
+    @IsNotEmpty()
+    @IsString()
+    Answer?: string
 }

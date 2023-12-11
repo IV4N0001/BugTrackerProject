@@ -29,7 +29,7 @@ export class bug {
 
     @Column({unique: true})
     name: string
-
+    
     @Column()
     summary: string
 
@@ -50,6 +50,15 @@ export class bug {
 
     @Column()
     ProjectName: string
+    
+    @Column({ type: 'mediumblob', nullable: true }) // Cambio aquí
+    image: Buffer;
+
+    @Column()
+    Answer: string
+
+    @Column({ type: 'mediumblob', nullable: true }) // Cambio aquí
+    imageAnswer: Buffer;
 
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date

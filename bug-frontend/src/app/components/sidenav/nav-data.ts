@@ -15,11 +15,6 @@ export const navbarData = [
         label: 'Bugs'
     },
     {
-        routerLink: '/settings',
-        icon: 'fal fa-gear',
-        label: 'Settings'
-    },
-    {
         routerLink: '/login',
         icon: 'fal fa-right-to-bracket',
         label: 'Login'

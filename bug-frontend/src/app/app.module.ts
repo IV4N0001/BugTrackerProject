@@ -22,6 +22,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BugdetailComponent } from './components/bugdetail/bugdetail.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     BugsComponent,
     ProjectsComponent,
     SettingsComponent,
+    BugdetailComponent
   ],
   imports: [
     BrowserModule,

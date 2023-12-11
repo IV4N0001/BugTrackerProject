@@ -6,6 +6,10 @@ import { IsNotEmpty, IsString } from "class-validator"
 export class CreateBugDto {
     @IsNotEmpty()
     @IsString()
+    name: string;
+    
+    @IsNotEmpty()
+    @IsString()
     summary: string
 
     @IsNotEmpty()

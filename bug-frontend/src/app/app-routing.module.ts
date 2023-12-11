@@ -8,6 +8,7 @@ import { RestorePwdComponent } from './components/restore-pwd/restore-pwd.compon
 import { ProjectsComponent } from './components/projects/projects.component';
 import { BugsComponent } from './components/bugs/bugs.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { BugdetailComponent } from './components/bugdetail/bugdetail.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent
+  },
+  {
+    path: 'bugdetail/:bugName',  // Agrega un parámetro dinámico ':bugName'
+    component: BugdetailComponent
   },
   {
     path: '**', redirectTo: 'login', pathMatch: 'full'
