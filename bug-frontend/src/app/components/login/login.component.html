@@ -1,18 +1,18 @@
 <div class="login-box">
-    <h2>Iniciar Sesión</h2>
+    <h2>Login</h2>
     <form *ngIf="!loading">
         <div class="user-box">
-            <input type="text" [(ngModel)]="userName" id="username" name = "email" size="25" placeholder="Nombre de Usuario"> <br><br>
+            <input type="text" [(ngModel)]="userName" id="username" name = "email" size="25" placeholder="Username"> <br><br>
         </div>
         <div class="user-box">
-            <input type="{{ passwordVisible ? 'text' : 'password' }}" [(ngModel)]="password" id="password" name="password" size="25" placeholder="Contraseña" #passwordField> <br><br>
+            <input type="{{ passwordVisible ? 'text' : 'password' }}" [(ngModel)]="password" id="password" name="password" size="25" placeholder="Password" #passwordField> <br><br>
             <span class="toggle-password" (click)="togglePasswordVisibility()">
                 <i class="fa" [ngClass]="{'fa-eye': passwordVisible, 'fa-eye-slash': !passwordVisible}"></i>
             </span>
         </div>
-        <button class="button" type="submit" id="button" (click)="login()">Ingresar</button>
-        <p class="signup-text">¿Aun no tienes una cuenta? <a routerLink="/sign">Registrate</a></p>
-        <p class="signup-text">¿Olvidaste tu contraseña? <a routerLink="/requestPwd">Recupera tu contraseña</a></p>
+        <button class="button" type="submit" id="button" (click)="login()">Sign in</button>
+        <p class="signup-text">Do not you have an account yet? <a routerLink="/sign">Sign up</a></p>
+        <p class="signup-text">Forgot your password? <a routerLink="/requestPwd">Recover your password</a></p>
     </form>
     <app-spinner *ngIf="loading"></app-spinner>
 </div>

@@ -35,7 +35,7 @@ export class LoginComponent {
 
   login() {
     if (this.userName === '' || this.password === '') {
-      this.toastr.error('No deje ningún campo sin llenar!', 'Error');
+      this.toastr.error('Do not leave any field unfilled!', 'Error');
     } else {
       const user: User = {
         userName: this.userName,
@@ -57,9 +57,9 @@ export class LoginComponent {
         error: (e: HttpErrorResponse) => {
           this.loading = false;
           if (e.status === 404) {
-            this.toastr.error(`Credenciales NO válidas`, 'Error!');
+            this.toastr.error(`Invalid credentials`, 'Error!');
           } else {
-            this.toastr.error(`Uups, ocurrió un error`, 'Error!');
+            this.toastr.error(`Oops, an error occurred`, 'Error!');
           }
         }
       });

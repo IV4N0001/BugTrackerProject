@@ -33,7 +33,7 @@ export class RestorePwdComponent {
 
   restorePwd() {
     if(this.token === '' || this.password === '') {
-      this.toastr.error('No deje ningun campo sin llenar!', 'Error')
+      this.toastr.error('Do not leave any field unfilled!', 'Error')
     } else {
       const user: User = {
         passwordToken: this.token,
@@ -45,15 +45,15 @@ export class RestorePwdComponent {
       this.userService.restorePwd(user).subscribe({
         next: (v) => {
           this.loading = false
-          this.toastr.success(`Se ha restaurado tu contraseña`, 'Contraseña cambiada')
+          this.toastr.success(`Your password has been reset`, 'Password changed')
           this.router.navigate(['/login'])
         },
         error: (e: HttpErrorResponse) => {
           this.loading = false
           if(e.status === 404) {
-            this.toastr.error(`No existe ningun usuario con el token ${user.passwordToken} asociado`, 'Error!')
+            this.toastr.error(`There is no user with the associated token ${user.passwordToken}`, 'Error!')
           } else {
-            this.toastr.error(`Uups, ocurrió un error`, 'Error!')
+            this.toastr.error(`Oops, an error occurred`, 'Error!')
           }
         }
       })
