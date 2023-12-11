@@ -23,7 +23,7 @@ export class RequestPwdComponent {
 
   requestPwd() {
     if(this.email === '') {
-      this.toastr.error('No deje ningun campo sin llenar!', 'Error')
+      this.toastr.error('Do not leave any field unfilled!', 'Error')
     } else {
       const user: User = {
         email: this.email
@@ -34,15 +34,15 @@ export class RequestPwdComponent {
       this.userService.requestPwd(user).subscribe({
         next: (v) => {
           this.loading = false
-          this.toastr.success(`Se ha enviado un token a ${user.email}`, 'Token enviado')
+          this.toastr.success(`A token has been sent to ${user.email}`, 'Token sent')
           this.router.navigate(['/restorePwd'])
         },
         error: (e: HttpErrorResponse) => {
           this.loading = false
           if(e.status === 404) {
-            this.toastr.error(`No existe ningun usuario con el correo ${user.email} asociado`, 'Error!')
+            this.toastr.error(`There is no user with the associated email ${user.email}`, 'Error!')
           } else {
-            this.toastr.error(`Uups, ocurrió un error`, 'Error!')
+            this.toastr.error(`Oops, an error occurred`, 'Error!')
           }
         }
       })
