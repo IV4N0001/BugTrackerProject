@@ -23,6 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BugdetailComponent } from './components/bugdetail/bugdetail.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { BugdetailComponent } from './components/bugdetail/bugdetail.component';
     BugsComponent,
     ProjectsComponent,
     SettingsComponent,
-    BugdetailComponent
+    BugdetailComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,

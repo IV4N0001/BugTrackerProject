@@ -54,7 +54,11 @@ export class bug {
     @Column({ type: 'mediumblob', nullable: true }) // Cambio aquí
     image: Buffer;
 
+<<<<<<< HEAD
     @Column({ nullable: true })
+=======
+    @Column({nullable: true})
+>>>>>>> 09764b8 (22vo Commit)
     Answer: string | null;
 
     @Column({ type: 'mediumblob', nullable: true }) // Cambio aquí
