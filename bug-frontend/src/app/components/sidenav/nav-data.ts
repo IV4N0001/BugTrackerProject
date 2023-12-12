@@ -1,7 +1,7 @@
 export const navbarData = [
     {
         routerLink: '/dashboard',
-        icon: 'fal fa-home',
+        icon: 'fal fa-chart-pie',
         label: 'Dashboard'
     },
     {
@@ -13,6 +13,11 @@ export const navbarData = [
         routerLink: '/bugs',
         icon: 'fal fa-bug',
         label: 'Bugs'
+    },
+    {
+        routerLink: '/notifications',
+        icon: 'fal fa-bell',
+        label: 'Notifications'
     },
     {
         routerLink: '/login',

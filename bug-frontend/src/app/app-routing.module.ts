@@ -9,6 +9,7 @@ import { ProjectsComponent } from './components/projects/projects.component';
 import { BugsComponent } from './components/bugs/bugs.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { BugdetailComponent } from './components/bugdetail/bugdetail.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path: 'bugs',
     component: BugsComponent
+  },
+  {
+    path: 'notifications',
+    component: NotificationsComponent
   },  
   {
     path: 'settings',

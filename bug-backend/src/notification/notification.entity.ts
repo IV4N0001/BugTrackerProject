@@ -1,30 +1,20 @@
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 import { user } from "src/user/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-
-export enum type {
-    URGENT = 'URGENT',
-    NO_URGENT = 'NO URGENT'
-}
 
 @Entity()
-export class notification{
+export class notification {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @Column()
-    message: string
+    message: string;
 
-    @Column()
-    type: type
+    @Column({nullable: true})
+    sender: string;
 
-    @ManyToOne(() => user)
-    @JoinColumn()
-    remmittent: user
-
-    @ManyToOne(() => user)
-    @JoinColumn()
-    addressee: user
+    @Column({nullable: true})
+    recipient: string;
 
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt: Date
+    createdAt: Date;
 }

@@ -4,8 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Project } from 'src/app/interfaces/project';
 import { User } from 'src/app/interfaces/user';
+import { NotificationService } from 'src/app/services/notification.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
+import { Notification } from 'src/app/interfaces/notification';
 
 @Component({
   selector: 'app-projects',
@@ -35,7 +37,7 @@ export class ProjectsComponent implements OnInit {
   totalProjects = 0; // Número total de proyectos
   totalPages = 0; 
 
-  constructor(private userService: UserService, private projectService: ProjectService, private fb: FormBuilder, private toastr: ToastrService) {
+  constructor(private userService: UserService, private projectService: ProjectService, private fb: FormBuilder, private toastr: ToastrService, private notificationService: NotificationService) {
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
       userName: [{ value: '' }, Validators.required],
@@ -184,6 +186,7 @@ export class ProjectsComponent implements OnInit {
           console.log(project);
           this.loadProjects();
           this.projectForm.reset();
+          this.showProjectForm = false;
         },
         error: (e: HttpErrorResponse) => {
           this.loading = false;
@@ -216,6 +219,17 @@ export class ProjectsComponent implements OnInit {
           this.toastr.success('Contributor successfully added', 'Added Contributor');
           this.loadProjects();
           this.collaboratorForm.reset();
+          this.showCollaboratorForm = false;
+
+          const notification: Notification = {
+            sender: localStorage.getItem('userName') || '',
+            recipient: collaboratorData.collaborator,
+            message: `added you as a ${collaboratorData.role} in project ${collaboratorData.name}`
+          };
+
+          this.notificationService.createNotification(notification).subscribe({
+            next: (v) => {}
+          })
         },
         error: (e: HttpErrorResponse) => {
           this.loading = false;
