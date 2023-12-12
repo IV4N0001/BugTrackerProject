@@ -253,6 +253,7 @@ export class BugsComponent implements OnInit {
         console.log(response);
         this.bugs.push(response);
         this.closeBugForm();
+        this.loadBugs();
         alert('bug created successfully');
       },
       error => {

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { BugService } from 'src/app/services/bug.service';
-import { FormsModule } from '@angular/forms';
-import { Input, Output, EventEmitter } from '@angular/core';
+import { FormsModule,FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-bugdetail',
