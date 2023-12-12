@@ -52,6 +52,7 @@ export class user {
     @Column('simple-array', {nullable: true})
     projects: string[]
 
+    /*
     @OneToMany(() => notification, notification => notification.addressee)
     @JoinColumn()
     notificationReceived: notification
@@ -59,6 +60,7 @@ export class user {
     @OneToMany(() => notification, notification => notification.remmittent)
     @JoinColumn()
     notificationSent: notification
+    */
 
     @Column('simple-array', { nullable: true })
     project_collaborations: string[];
