@@ -97,7 +97,7 @@ export class BugsComponent implements OnInit {
     this.loadProjects();
 
     this.loadProjectsUserAndCollaborators();
-    
+
   }
 
   loadBugByProyecto(opcion: string) {
@@ -368,5 +368,41 @@ export class BugsComponent implements OnInit {
       this.currentPage--;
     }
   }
+
+  //Colores
+  getColorStyleForSeverity(severity: string): { color: string, background: string, borderRadius: string, textAlign: string } {
+    let color: string;
+    let background: string;
+    let borderRadius: string;
+    let textAlign: string;
   
+    switch (severity) {
+      case 'LOW':
+        color = 'green';
+        background = 'lightgreen';
+        borderRadius = '20px'; // Puedes ajustar el valor según tus preferencias
+        textAlign = 'center';
+        break;
+      case 'MEDIUM':
+        color = 'orange';
+        background = 'lightyellow';
+        borderRadius = '20px'; // Puedes ajustar el valor según tus preferencias
+        textAlign = 'center';
+        break;
+      case 'HIGH':
+        color = 'red';
+        background = 'lightcoral';
+        borderRadius = '20px'; // Puedes ajustar el valor según tus preferencias
+        textAlign = 'center';
+        break;
+      default:
+        color = 'black';
+        background = 'white';
+        borderRadius = '0px'; // Valor predeterminado sin radio de borde
+        textAlign = 'center';
+        break;
+    }
+  
+    return { color, background, borderRadius, textAlign };
+  }
 }

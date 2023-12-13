@@ -125,31 +125,58 @@
         </div>
     </div>
 
-    <div class="row col-12"></div>
+<div class="row col-12"></div>
 <div class="table-responsive">
   <table class="table table-fixed">
     <thead>
       <tr>
         <th scope="col" style="width: 250px;">Bug:</th>
         <th scope="col">Project</th>
-        <th scope="col">User:</th>
+        <th scope="col">Autor:</th>
         <th scope="col">Status:</th>
         <th scope="col">Severity:</th>
-        <th scope="col">Priority:</th>
         <th scope="col">CreatedAt:</th>
-        <th scope="col">Answer</th>
-      </tr>
+        <th scope="col">Priority:</th>
+        <th scope="col">Assigned To:</th>
+        <th scope="col">Answer:</th>
+    </tr>
     </thead>
     <tbody>
-      <!-- Aplica la paginación mostrando solo los primeros 10 elementos de la matriz -->
+        <!-- Aplica la paginación mostrando solo los primeros 10 elementos de la matriz -->
       <tr *ngFor="let bug of pagedBugs">
         <td (click)="navigateToBugDetails(bug.name)">{{ bug.name }}</td>
+        
         <td (click)="navigateToBugDetails(bug.name)">{{ bug.ProjectName }}</td>
         <td (click)="navigateToBugDetails(bug.name)">{{ bug.userName }}</td>
         <td (click)="navigateToBugDetails(bug.name)">{{ bug.state }}</td>
-        <td (click)="navigateToBugDetails(bug.name)">{{ bug.severity }}</td>
-        <td (click)="navigateToBugDetails(bug.name)">{{ bug.priority }}</td>
-        <td (click)="navigateToBugDetails(bug.name)">{{ bug.createdAt | date:'dd/MM/yyyy'}}</td>
+        <td (click)="navigateToBugDetails(bug.name)"
+            [ngStyle]="{
+            'color': getColorStyleForSeverity(bug.severity).color,
+            'background': getColorStyleForSeverity(bug.severity).background,
+            'border-radius': getColorStyleForSeverity(bug.severity).borderRadius,
+            'text-align': getColorStyleForSeverity(bug.severity).textAlign
+            }">
+        {{ bug.severity }}
+        </td>
+        <td (click)="navigateToBugDetails(bug.name)"
+        [ngStyle]="{
+            'text-align': getColorStyleForSeverity(bug.createdAt).textAlign
+            }">{{ bug.createdAt | date:'dd/MM/yyyy'}}</td>
+        <td (click)="navigateToBugDetails(bug.name)"
+        [ngStyle]="{
+            'color': getColorStyleForSeverity(bug.priority).color,
+            'background': getColorStyleForSeverity(bug.priority).background,
+            'border-radius': getColorStyleForSeverity(bug.priority).borderRadius,
+            'text-align': getColorStyleForSeverity(bug.priority).textAlign
+        }">
+            {{ bug.priority }}
+        </td>
+        <td (click)="navigateToBugDetails(bug.name)"
+        [ngStyle]="{
+            'text-align': getColorStyleForSeverity(bug.createdAt).textAlign
+            }">
+            {{ bug.collaborators[0] }}
+        </td>
         <td (click)="navigateToBugDetails(bug.name)">
           <ng-container *ngIf="bug.Answer !== null && bug.Answer.trim() !== ''; else noAnswer">
             <mat-icon>done</mat-icon>
