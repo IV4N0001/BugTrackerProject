@@ -86,5 +86,6 @@ tr.clicked {
     bottom: 50px;
     left: 650px;
     margin: 10px;
+    z-index: -1;
     /* Añade otros estilos según sea necesario */
 }
