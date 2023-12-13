@@ -33,6 +33,12 @@ export class BugController {
         return this.bugService.getBugByName(name);
     }
 
+    @Get('/name/like/:bugname')
+    async getBugsByName(@Param('bugname') bugname: string) {
+    const bugs = await this.bugService.getBugsByName(bugname);
+    return bugs;
+    }
+
     @Post('createBug')
     createBug(@Body() newBug: CreateBugDto) {
         this.bugService.createBug(newBug);
@@ -71,5 +77,10 @@ export class BugController {
     @Patch(':id')
     updateBug(@Param('id', ParseIntPipe) id: number, @Body() bug: UpdateBugDto) {
         return this.bugService.updateBug(id, bug);
+    }
+
+    @Delete('deleteBug/:id')
+    deleteBug(@Param('id') id: number){
+        return this.bugService.deleteBug(id);
     }
 }

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { BugService } from 'src/app/services/bug.service';
-import { FormsModule } from '@angular/forms';
-import { Input, Output, EventEmitter } from '@angular/core';
+import { FormsModule,FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-bugdetail',
@@ -20,8 +21,10 @@ export class BugdetailComponent implements OnInit {
   priority: string = "";
   severity: string = "";
   finishedAt: Date = new Date();
+  BugAutor: string | undefined;
+  bugCollaborator: string | undefined;
 
-  constructor(private route: ActivatedRoute, private bugService: BugService) {}
+  constructor(private toastr: ToastrService,private route: ActivatedRoute, private router: Router, private bugService: BugService) {}
 
   ngOnInit(): void {
     // Suscríbete a los cambios en los parámetros de la ruta
@@ -42,6 +45,8 @@ export class BugdetailComponent implements OnInit {
     this.bugService.GetBugByName(bugName).subscribe(
       (response) => {
         console.log(response);
+        this.BugAutor = response.userName;
+        this.bugCollaborator = response.collaborators[0];
         // Manejar la respuesta aquí, por ejemplo, asignarla a la propiedad bugs
         this.bugs = response;
       },
@@ -62,30 +67,72 @@ export class BugdetailComponent implements OnInit {
     console.log(this.finishedAt);
   }
 
-  submitFormChangeBug(id: number){
-    this.bugService.ChangedState(id,this.state).subscribe(
-      Response => {
-        alert ("State changed successfully");
-      },
-      error => {
-        console.error('Error cambiando los datos', error);
-      }
-    )
-  }
+
+  submitFormChangeBug(id: number) {
+    // Obtener el valor de 'userName' desde el localStorage
+    const localStorageUserName = localStorage.getItem('userName');
+  
+    // Comparar 'localStorageUserName' con 'bugAutor'
+    if (localStorageUserName === this.BugAutor) {
+      // Si son iguales, llamar al servicio
+      this.bugService.ChangedState(id, this.state).subscribe(
+        Response => {
+          this.toastr.success('State Changed Successfully');
+        },
+        error => {
+          this.toastr.error('Error');
+        }
+      );
+    } else {
+      // Si no son iguales, mostrar un mensaje de error
+      this.toastr.error('You do not have permissions to change bug');
+    }
+  } 
+  
 
   submitForm(id: number) {
-    // Actualiza bugs.Answer con nuevoValorRespuesta
-    console.log('Valor del textarea:', this.respuesta);
-    // Luego, realiza la solicitud o la acción necesaria con el nuevo valor
-    this.bugService.ChangeAnswerBug(id,this.respuesta).subscribe(
-      response => {
-        alert('Answer changed successfully');
-        // Realiza cualquier acción adicional después de la actualización exitosa
-      },
-      error => {
-        console.error('Error cambiando los datos', error);
-        // Maneja el error de acuerdo a tus necesidades
-      }
-    );
+    // Obtener el valor de 'userName' desde el localStorage
+    const localStorageUserName = localStorage.getItem('userName');
+    console.log(this.bugCollaborator);
+    // Comparar 'localStorageUserName' con 'bugCollaborator'
+    if (localStorageUserName === this.bugCollaborator) {
+      // Si son iguales, llamar al servicio
+      this.bugService.ChangeAnswerBug(id, this.respuesta).subscribe(
+        response => {
+          this.toastr.success('Answer changed successfully');
+          // Realiza cualquier acción adicional después de la actualización exitosa
+        },
+        error => {
+          this.toastr.error('Error');
+          // Maneja el error de acuerdo a tus necesidades
+        }
+      );
+    } else {
+      // Si no son iguales, mostrar un mensaje de error
+      this.toastr.error('This bug is not assigned to you');
+    }
+  }
+  
+  deleteBug(notificationId: number) { // Cambia el tipo de dato de 'string' a 'number'
+    const localStorageUserName = localStorage.getItem('userName');
+  
+    // Comparar 'localStorageUserName' con 'bugAutor'
+    if (localStorageUserName === this.BugAutor) {
+      // Si son iguales, llamar al servicio
+      this.bugService.deleteNotification(notificationId).subscribe(
+        (response) => {
+          // Actualizar la lista de notificaciones después de eliminar
+            this.toastr.success('Bug was deleted!', 'Deleted bug')
+            this.router.navigate(['/bugs'])
+            },
+        (error) => {
+          console.error('Error deleting notification:', error);
+        }
+      );
+    } else {
+      // Si no son iguales, mostrar un mensaje de error
+      this.toastr.error('You do not have permissions to delete bug');
+    }
+
   }
 }

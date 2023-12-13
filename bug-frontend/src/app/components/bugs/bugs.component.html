@@ -22,23 +22,50 @@
         <div class="col-md-2">
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Category:
+                    Status:
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" (click)="BUGOPEN('OPEN')">OPEN</a>
-                    <a class="dropdown-item" (click)="RESOLVED('RESOLVED')">RESOLVED</a>
-                    <a class="dropdown-item" (click)="CLOSED('CLOSED')">CLOSED</a>
+                    <a class="dropdown-item" (click)="loadBugByState('OPEN')">OPEN</a>
+                    <a class="dropdown-item" (click)="loadBugByState('RESOLVED')">RESOLVED</a>
+                    <a class="dropdown-item" (click)="loadBugByState('CLOSED')">CLOSED</a>
+                </div>
+            </div>
+
+            <div class="dropdown-menu">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Priority:
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item">Priority</a>
+                    <a class="dropdown-item" (click)="loadBugByPriority('LOW')">LOW</a>
+                    <a class="dropdown-item" (click)="loadBugByPriority('MEDIUM')">MEDIUM</a>
+                    <a class="dropdown-item" (click)="loadBugByPriority('HIGH')">HIGH</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-10 d-flex justify-content-end">
-            <button class="btn btn-primary" id="Boton_new" (click)="openBugForm()">Submit Bug</button>
+        <div class="col-md-2">
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="cargarOpcionesProyecto()">
+                    Project:
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let opcion of opcionesProyecto" class="dropdown-item" (click)="loadBugByProyecto(opcion.name)">{{ opcion.name }}</a>
+                </div>
+            </div>
         </div>
 
+        <div class="col-md-6 d-flex justify-content-end">
+            <button class="btn btn-primary" id="Boton_new" (click)="openBugForm()">Submit Bug</button>
+        </div>
+        
         <!-- Formulario -->
-          <div *ngIf="showBugForm" class="bug-form-container">
-            <button class="close-button" (click)="closeBugForm()">X</button>
+          <div *ngIf="showBugForm" class="bug-form-container" [ngDraggable]="true">
+            <button class="close-button" (click)="closeBugForm()"><mat-icon>cancel</mat-icon></button>
             <form (submit)="submitBugForm()" [formGroup]="bugForm" enctype="multipart/form-data">
             <!-- Campos del formulario -->
             <label for="name">Bug Name:</label>
@@ -49,6 +76,8 @@
 
             <label for="description">Description:</label>
             <textarea id="description" formControlName="description" required></textarea>
+
+            
 
             <label for="opciones">State:</label>
             <select id="opcionesstate" name="opcionesstate" formControlName="selectedOptionState" required>
@@ -96,31 +125,79 @@
         </div>
     </div>
 
-    <div class="row col-12"></div>
-    <div class="table-responsive">
-        <table class="table table-fixed">
-        <thead>
-            <tr>
-            <th scope="col" style="width: 250px;">Bug:</th>
-            <th scope="col">Project</th>
-            <th scope="col">User:</th>
-            <th scope="col">Status:</th>
-            <th scope="col">Severity:</th>
-            <th scope="col">CreatedAt:</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let bug of bugs">
-                <td (click)="navigateToBugDetails(bug.name)">{{ bug.name }}</td>
-                <td (click)="navigateToBugDetails(bug.name)">{{bug.ProjectName}}</td>
-                <td (click)="navigateToBugDetails(bug.name)">{{ bug.userName }}</td>
-                <td (click)="navigateToBugDetails(bug.name)">{{ bug.state }}</td>
-                <td (click)="navigateToBugDetails(bug.name)">{{ bug.severity }}</td>
-                <td (click)="navigateToBugDetails(bug.name)">{{ bug.createdAt | date:'dd/MM/yyyy'}}</td>
-            </tr>
+<div class="row col-12"></div>
+<div class="table-responsive">
+  <table class="table table-fixed">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 250px;">Bug:</th>
+        <th scope="col">Project</th>
+        <th scope="col">Autor:</th>
+        <th scope="col">Status:</th>
+        <th scope="col">Severity:</th>
+        <th scope="col">CreatedAt:</th>
+        <th scope="col">Priority:</th>
+        <th scope="col">Assigned To:</th>
+        <th scope="col">Answer:</th>
+    </tr>
+    </thead>
+    <tbody>
+        <!-- Aplica la paginación mostrando solo los primeros 10 elementos de la matriz -->
+      <tr *ngFor="let bug of pagedBugs">
+        <td (click)="navigateToBugDetails(bug.name)">{{ bug.name }}</td>
+        
+        <td (click)="navigateToBugDetails(bug.name)">{{ bug.ProjectName }}</td>
+        <td (click)="navigateToBugDetails(bug.name)">{{ bug.userName }}</td>
+        <td (click)="navigateToBugDetails(bug.name)">{{ bug.state }}</td>
+        <td (click)="navigateToBugDetails(bug.name)"
+            [ngStyle]="{
+            'color': getColorStyleForSeverity(bug.severity).color,
+            'background': getColorStyleForSeverity(bug.severity).background,
+            'border-radius': getColorStyleForSeverity(bug.severity).borderRadius,
+            'text-align': getColorStyleForSeverity(bug.severity).textAlign
+            }">
+        {{ bug.severity }}
+        </td>
+        <td (click)="navigateToBugDetails(bug.name)"
+        [ngStyle]="{
+            'text-align': getColorStyleForSeverity(bug.createdAt).textAlign
+            }">{{ bug.createdAt | date:'dd/MM/yyyy'}}</td>
+        <td (click)="navigateToBugDetails(bug.name)"
+        [ngStyle]="{
+            'color': getColorStyleForSeverity(bug.priority).color,
+            'background': getColorStyleForSeverity(bug.priority).background,
+            'border-radius': getColorStyleForSeverity(bug.priority).borderRadius,
+            'text-align': getColorStyleForSeverity(bug.priority).textAlign
+        }">
+            {{ bug.priority }}
+        </td>
+        <td (click)="navigateToBugDetails(bug.name)"
+        [ngStyle]="{
+            'text-align': getColorStyleForSeverity(bug.createdAt).textAlign
+            }">
+            {{ bug.collaborators[0] }}
+        </td>
+        <td (click)="navigateToBugDetails(bug.name)">
+          <ng-container *ngIf="bug.Answer !== null && bug.Answer.trim() !== ''; else noAnswer">
+            <mat-icon>done</mat-icon>
+            </ng-container>
+            <ng-template #noAnswer>
+                <mat-icon>clear</mat-icon>
+            </ng-template>
+            </td>
+        </tr>
         </tbody>
-        </table>
+    </table>
+
+<!-- Controles de paginación -->
+<div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPage === 1"><mat-icon>arrow_left</mat-icon></button>    
+    <span>  Pagina No: {{ currentPage }}  </span>
+    <span></span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages"><mat-icon>arrow_right</mat-icon></button>
+    </div>
 </div>
 
 
+        
 </div>

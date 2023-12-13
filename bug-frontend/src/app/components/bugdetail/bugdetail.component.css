@@ -8,6 +8,11 @@ div{
         padding: 0; /* Asegura que no haya relleno predeterminado */
 }
 
+.boton_submit{
+    width: 220px;
+    text-align: center;
+}
+
 button {
     padding: 10px;
     background-color: red;
@@ -15,4 +20,41 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.contenedor {
+    display: flex;
+}
+
+.columna-1 {
+    flex: 1;
+    padding: 25px;
+    margin: 0 10px;
+}
+
+.columna-2 {
+    flex: 1;
+    padding: 25px;
+    margin: 0 10px;
+}
+
+.delete-bug-button {
+    position: absolute;
+    top: 110px;
+    right: 1240px;
+    background-color: red;
+    color: #fff;
+    border-radius: 15%;
+    width: 39px;
+    height: 39px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+}
+
+.delete-bug-button:hover {
+    background-color: black;
 }
