@@ -23,6 +23,7 @@ export class BugdetailComponent implements OnInit {
   finishedAt: Date = new Date();
   BugAutor: string | undefined;
   bugCollaborator: string | undefined;
+  base64Image: string = "";
 
   constructor(private toastr: ToastrService,private route: ActivatedRoute, private router: Router, private bugService: BugService) {}
 

@@ -20,18 +20,17 @@ export class BugService {
     return this.http.get<[]>(`${this.APPUrl}${this.APIUrl}`);
   }
 
-<<<<<<< HEAD
   getBugsForUserAndCollaborations(): Observable<any> {
     const user = localStorage.getItem('userName')
     return this.http.get(`${this.APPUrl}${this.APIUrl}/getBugsForUserAndCollaborations/${user}`)
-=======
+  }
+
   GetBugById(id: number): Observable<any> {
     return this.http.get(`${this.APPUrl}${this.APIUrl}/${id}`);
   }
 
   GetBugByLikeName(name: string): Observable<any> {
     return this.http.get(`${this.APPUrl}${this.APIUrl}/name/like/${name}`);
->>>>>>> 4271d5838ee9966e435550ffac5aefbb12b8092c
   }
   
   createBug(bugData: any): Observable<any> {

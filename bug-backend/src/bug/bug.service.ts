@@ -38,8 +38,7 @@ export class BugService {
             return new HttpException('Bug not found', HttpStatus.NOT_FOUND);
         }
     }
-    
-<<<<<<< HEAD
+
     async getBugsForUserAndCollaborations(username: string): Promise<bug[]> {
         const userBugs = await this.bugRepository.find({
             where: { userName: username },
@@ -59,7 +58,6 @@ export class BugService {
         return uniqueBugs;
     }
     
-=======
     async deleteBug(id: number) {
         const result = await this.bugRepository.delete({ id });
 
@@ -70,7 +68,6 @@ export class BugService {
         return result;
     }
 
->>>>>>> 4271d5838ee9966e435550ffac5aefbb12b8092c
     async getBugByName(name: string) {
         const bugName = await this.bugRepository.findOne({where: { name }})
 
@@ -165,5 +162,5 @@ export class BugService {
         const updateBug = Object.assign(bugFound, bug);
         return this.bugRepository.save(updateBug);
     }
-    
+
 }

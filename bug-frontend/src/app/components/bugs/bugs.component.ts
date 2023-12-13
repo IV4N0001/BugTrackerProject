@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { Notification } from 'src/app/interfaces/notification';
+import { FileService } from 'src/app/services/file.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class BugsComponent implements OnInit {
   pageSize = 10;     // Tamaño de la página
   currentPage = 1;   // Página actual
 
-  constructor(private toastr: ToastrService, private route: Router, private bugService: BugService, private notificationService: NotificationService, private projectService: ProjectService, private fb: FormBuilder,private http: HttpClient) {
+  constructor(fileService: FileService, private toastr: ToastrService, private route: Router, private bugService: BugService, private notificationService: NotificationService, private projectService: ProjectService, private fb: FormBuilder,private http: HttpClient) {
     this.archivos = [];
     this.bugForm = this.fb.group({
       name: ['', Validators.required],
@@ -97,6 +98,14 @@ export class BugsComponent implements OnInit {
     this.loadProjects();
 
     this.loadProjectsUserAndCollaborators();
+
+    const imageBuffer = Buffer.from([
+      67, 58, 92, 102, 97, 107, 101, 112, 97, 116, 104, 92, 80, 114, 111, 99, 101, 115, 111, 53, 46, 112, 110, 103
+    ]);
+    
+    const base64String = imageBuffer.toString('base64');
+    console.log(base64String);
+    
 
   }
 

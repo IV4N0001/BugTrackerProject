@@ -12,11 +12,9 @@ export class NotificationsComponent {
   totalNotifications = 0;
   userLocalStorage: string | null = '';
 
-
-  
   constructor(private notificationService: NotificationService) {}
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.userLocalStorage = localStorage.getItem('userName');
     this.loadNotifications()
   }
@@ -30,6 +28,13 @@ export class NotificationsComponent {
           formattedDate: notification.createdAt ? new Date(notification.createdAt).toLocaleDateString() : '',
           formattedTime: notification.createdAt ? new Date(notification.createdAt).toLocaleTimeString() : '',
         }));
+
+        // Ordenar las notificaciones por fecha en orden descendente
+        this.notifications.sort((a, b) => {
+          const dateA = new Date(a.createdAt);
+          const dateB = new Date(b.createdAt);
+          return dateB.getTime() - dateA.getTime();
+        });
       },
       (error) => {
         console.error('Error fetching notifications:', error);
@@ -37,7 +42,7 @@ export class NotificationsComponent {
     );
   }
 
-  deleteNotification(notificationId: number) { // Cambia el tipo de dato de 'string' a 'number'
+  deleteNotification(notificationId: number) {
     this.notificationService.deleteNotification(notificationId).subscribe(
       (response) => {
         // Actualizar la lista de notificaciones después de eliminar
