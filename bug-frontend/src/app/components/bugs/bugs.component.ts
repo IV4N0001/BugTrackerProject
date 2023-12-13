@@ -97,15 +97,7 @@ export class BugsComponent implements OnInit {
     
     this.loadProjects();
 
-    this.loadProjectsUserAndCollaborators();
-
-    const imageBuffer = Buffer.from([
-      67, 58, 92, 102, 97, 107, 101, 112, 97, 116, 104, 92, 80, 114, 111, 99, 101, 115, 111, 53, 46, 112, 110, 103
-    ]);
-    
-    const base64String = imageBuffer.toString('base64');
-    console.log(base64String);
-    
+    this.loadProjectsUserAndCollaborators();    
 
   }
 
