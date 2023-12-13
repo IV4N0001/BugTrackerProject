@@ -80,3 +80,11 @@ tr {
 tr.clicked {
     background-color: #e0e0e0; /* Cambia el color de fondo al hacer clic en la fila */
 }
+
+.pagination-controls {
+    position: fixed;
+    bottom: 50px;
+    left: 650px;
+    margin: 10px;
+    /* Añade otros estilos según sea necesario */
+}

@@ -37,3 +37,24 @@ button {
     padding: 25px;
     margin: 0 10px;
 }
+
+.delete-bug-button {
+    position: absolute;
+    top: 110px;
+    right: 1240px;
+    background-color: red;
+    color: #fff;
+    border-radius: 15%;
+    width: 39px;
+    height: 39px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+}
+
+.delete-bug-button:hover {
+    background-color: black;
+}

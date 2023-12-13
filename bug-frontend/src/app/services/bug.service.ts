@@ -19,6 +19,14 @@ export class BugService {
   getBugs(): Observable<any[]> {
     return this.http.get<[]>(`${this.APPUrl}${this.APIUrl}`);
   }
+
+  GetBugById(id: number): Observable<any> {
+    return this.http.get(`${this.APPUrl}${this.APIUrl}/${id}`);
+  }
+
+  GetBugByLikeName(name: string): Observable<any> {
+    return this.http.get(`${this.APPUrl}${this.APIUrl}/name/like/${name}`);
+  }
   
   createBug(bugData: any): Observable<any> {
     console.log('metodo llamado');
@@ -57,5 +65,9 @@ export class BugService {
     // Realiza la solicitud PATCH con el cuerpo de la respuesta
     return this.http.patch(url, body);
   }
+
+  deleteNotification(id: number): Observable<any> {
+    return this.http.delete(`${this.APPUrl}${this.APIUrl}/deleteBug/${id}`)
+}
 
 }

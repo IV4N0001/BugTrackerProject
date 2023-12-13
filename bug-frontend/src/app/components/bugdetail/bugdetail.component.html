@@ -3,7 +3,6 @@
         <div class="container-fluid">
         <a class="navbar-brand" routerLink="/bugs">BugTracker</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -15,16 +14,20 @@
 </nav>
 <div class="row border-top"></div>
     <div class="container-fluid">
-        <h2>Bug:</h2>
+        <h2>Bug:
+            <button class="delete-bug-button" matTooltip="Delete Notification" (click)="deleteBug(bugs.id)">
+                <mat-icon>delete_forever</mat-icon>
+            </button>
+        </h2>
     <form (submit)="submitFormChangeBug(bugs.id)">
         <div class="contenedor">
             <div class="columna-1">
                 <label for="bugName">Bug Name:</label>
-                <input type="text" class="form-control" id="bugNameInput" [value]="bugs.name" readonly>
+                <input type="text" class="form-control" id="bugNameInput" [value]="bugs.name" disabled readonly>
 
                 
                     <label for="summary">Summary:</label>
-                    <textarea class="form-control" id="summary" rows="5" [value]="bugs.summary" readonly></textarea>
+                    <textarea class="form-control" id="summary" rows="5" [value]="bugs.summary" disabled readonly></textarea>
 
                     
                         <label for="state">State:</label>
@@ -34,50 +37,48 @@
                             <option value="CLOSED">CLOSED</option>
                         </select>
                     
-                
-                    
                     <label for="priority">Priority:</label>
-                    <input type="text" class="form-control" id="priorityInput" [value]="bugs.priority" readonly>
+                    <input type="text" class="form-control" id="priorityInput" [value]="bugs.priority" disabled readonly>
                     
             
                     
                     <label for="severity">Severity:</label>
-                    <input type="text" class="form-control" id="severityInput" [value]="bugs.severity" readonly>
+                    <input type="text" class="form-control" id="severityInput" [value]="bugs.severity" disabled readonly>
                     
                 
                     
                         <label for="createdAt">Created At:</label>
-                        <input type="text" class="form-control" id="createdAtInput" [value]="bugs.createdAt | date:'dd/MM/yyyy'" readonly>
+                        <input type="text" class="form-control" id="createdAtInput" [value]="bugs.createdAt | date:'dd/MM/yyyy'" disabled readonly>
                         
                     
                         
                         <label for="finishedAt">Finished at:</label>
-                        <input type="text" class="form-control" id="finishedAtInput" [value]="bugs.finishedAt | date:'dd/MM/yyyy'" readonly>  
+                        <input type="text" class="form-control" id="finishedAtInput" [value]="bugs.finishedAt | date:'dd/MM/yyyy'" disabled readonly>  
             </div>
             
             
             <div class="columna-2">
                 <label for="description">Description:</label>
-                <textarea class="form-control" id="description" rows="5" [value]="bugs.description" readonly></textarea>
+                <textarea class="form-control" id="description" rows="5" [value]="bugs.description" disabled readonly></textarea>
 
                 <div>
                     <label for="collaborator">Collaborator:</label>
-                    <input type="text" class="form-control" id="collaboratorInput" [value]="bugs.collaborators" readonly>
+                    <input type="text" class="form-control" id="collaboratorInput" [value]="bugs.collaborators" disabled readonly>
                     </div>
                 
                     <div>
                     <label for="projectName">Project Name:</label>
-                    <input type="text" class="form-control" id="projectNameInput" [value]="bugs.ProjectName" readonly>
+                    <input type="text" class="form-control" id="projectNameInput" [value]="bugs.ProjectName" disabled readonly>
                     </div>
                 
                     <div>
                     <label for="autor">Autor:</label>
-                    <input type="text" class="form-control" id="autorInput" [value]="bugs.userName" readonly>
+                    <input type="text" class="form-control" id="autorInput" [value]="bugs.userName" disabled readonly>
                     </div>
                 
                     <div>
                     <label for="imagen">Imagen:</label>
-                    <input type="text" class="form-control" id="imagenInput" [value]="bugs.image" readonly>
+                    <input type="text" class="form-control" id="imagenInput" [value]="bugs.image" disabled readonly>
                     </div>
                     <button type="submit" class="boton_submit">Change Bug</button>
             </div>
@@ -85,13 +86,13 @@
     </form>
     </div>
             <!-- Sección de colaborador y respuesta -->
-            <div class="container mt-auto">
+            <div class="container">
                 <h2>Answer:</h2>
                 <form (submit)="submitForm(bugs.id)">
 
                 <div class="form-group">
                     <label for="collaborator">Collaborator:</label>
-                    <input type="text" class="form-control" id="collaboratorInput" [value]="bugs.collaborators" readonly>
+                    <input type="text" class="form-control" id="collaboratorInput" [value]="bugs.collaborators" disabled readonly>
                 </div>
 
                     <div class="form-group">
