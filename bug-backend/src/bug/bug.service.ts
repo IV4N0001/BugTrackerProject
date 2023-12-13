@@ -19,7 +19,6 @@ export class BugService {
     (
         @Inject(forwardRef(() => UserService)) private userService: UserService,
         @InjectRepository(bug) private bugRepository: Repository<bug>) {
-
     }
     
     async createBug(bug: CreateBugDto) {
@@ -38,6 +37,25 @@ export class BugService {
         if(!bugFound) {
             return new HttpException('Bug not found', HttpStatus.NOT_FOUND);
         }
+    }
+    
+    async getBugsForUserAndCollaborations(username: string): Promise<bug[]> {
+        const userBugs = await this.bugRepository.find({
+            where: { userName: username },
+        });
+    
+        const collaboratedBugs = await this.bugRepository
+            .createQueryBuilder('bug')
+            .where(`bug.collaborators LIKE :username`, { username: `%${username}%` })
+            .getMany();
+    
+        // Combinar y eliminar duplicados (si es necesario)
+        const allBugs = [...userBugs, ...collaboratedBugs];
+        const uniqueBugs = Array.from(new Set(allBugs.map(bug => bug.id))).map(id => {
+            return allBugs.find(bug => bug.id === id);
+        });
+    
+        return uniqueBugs;
     }
     
     async getBugByName(name: string) {

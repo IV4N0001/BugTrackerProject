@@ -1,6 +1,5 @@
 import { bug } from "src/bug/bug.entity"
 import { coment } from "src/coment/coment.entity"
-import { notification } from "src/notification/notification.entity"
 import { project } from "src/project/project.entity"
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToMany, ManyToOne } from "typeorm"
 

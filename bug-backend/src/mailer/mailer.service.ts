@@ -12,7 +12,7 @@ export class MailerService {
             secure: true,
             auth: {
                 user: "bugwhispererinc@gmail.com",
-                pass: "owcdnaalicnddivg",
+                pass: "rdgykxwmqdfzlgne",
             },
         });
 

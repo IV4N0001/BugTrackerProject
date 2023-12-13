@@ -19,6 +19,11 @@ export class BugService {
   getBugs(): Observable<any[]> {
     return this.http.get<[]>(`${this.APPUrl}${this.APIUrl}`);
   }
+
+  getBugsForUserAndCollaborations(): Observable<any> {
+    const user = localStorage.getItem('userName')
+    return this.http.get(`${this.APPUrl}${this.APIUrl}/getBugsForUserAndCollaborations/${user}`)
+  }
   
   createBug(bugData: any): Observable<any> {
     console.log('metodo llamado');

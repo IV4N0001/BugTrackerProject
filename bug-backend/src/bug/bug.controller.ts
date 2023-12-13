@@ -14,6 +14,10 @@ import { AddCollaborator } from './dto/addCollaboratorDto';
 export class BugController {
     constructor(private bugService: BugService) {}
 
+    @Get('getBugsForUserAndCollaborations/:userName')
+    getBugsForUserAndCollaborations(@Param('userName') userName: string) {
+        return this.bugService.getBugsForUserAndCollaborations(userName);
+    }
     @Get()
     getUsers(): Promise<bug[]> {
         return this.bugService.getBugs();

@@ -14,7 +14,12 @@ import { JoinProject } from './dto/joinProjectDto';
 export class UserController {
 
     constructor(private userService: UserService, private jwtService: JwtService,) {}
-    
+
+    @Patch('requestPwd')
+    requestPassword(@Body() requestPassword: RequestPassword) {
+        return this.userService.requestPassword(requestPassword);
+    }
+
     @Get()
     getUsers(): Promise<user[]> {
         return this.userService.getUsers();
@@ -58,11 +63,6 @@ export class UserController {
         const accessToken = this.jwtService.sign(payload);
         
         return { access_token: accessToken };
-    }
-
-    @Patch('requestPwd')
-    requestPassword(@Body() requestPassword: RequestPassword) {
-        return this.userService.requestPassword(requestPassword);
     }
 
     @Patch('restorePwd')

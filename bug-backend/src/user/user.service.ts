@@ -111,14 +111,52 @@ export class UserService {
         return result;
     }
 
+    async restorePassword(restorePassword: RestorePassword) {
+        const { passwordToken, password } = restorePassword;
+        const user: user = await this.getPasswordToken(passwordToken);
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        this.sendPasswordToken(user.email, hashedPassword);
+        /*user.restorePasswordToken = null;
+        user.password = hashedPassword;
+        this.userRepository.save(user);*/
+        const updatedUser = Object.assign(user, {
+            restorePasswordToken: null,
+            password: hashedPassword,
+        });
+    
+        await this.userRepository.update(user.id, updatedUser);
+    }
+    
     async requestPassword(requestPassword: RequestPassword) {
-        const { email } = requestPassword;
+        const { email }  = requestPassword;
         const user = await this.getUserByEmail(email);
 
-        user.restorePasswordToken = v4()
-        this.userRepository.save(user);
+        if (!user) {
+            // Handle case where user is not found based on the email
+            throw new Error('User not found for the provided email');
+        }
+
+        //user.restorePasswordToken = v4()
+        //this.userRepository.save(user);
+
+        const restorePasswordToken = v4();
+        const updatedUser = Object.assign(user, { restorePasswordToken });
+    
+        await this.userRepository.update(user.id, updatedUser);
 
         this.sendPasswordToken(user.email, user.restorePasswordToken)
+    }
+
+    async sendPasswordToken(email: string, hashedPassword: string) {
+        const subject = 'Password reset token';
+        const emailData = {
+            to: email, 
+            subject: subject,
+            text: hashedPassword
+        };
+        return this.mailerService.sendMail(emailData.to, emailData.subject, emailData.text);
     }
 
     async getPasswordToken(newPasswordToken: string) {
@@ -142,28 +180,6 @@ export class UserService {
         user.project_collaborations.push(projectName.name)
 
         this.userRepository.save(user)
-    }
-
-    async sendPasswordToken(email, hashedPassword: string) {
-        const subject = 'Password reset token';
-        const emailData = {
-            to: email, 
-            subject: subject,
-            text: hashedPassword
-        };
-        return this.mailerService.sendMail(emailData.to, emailData.subject, emailData.text);
-    }
-
-    async restorePassword(restorePassword: RestorePassword) {
-        const { passwordToken, password } = restorePassword;
-        const user: user = await this.getPasswordToken(passwordToken);
-        const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        this.sendPasswordToken(user.email, hashedPassword);
-        user.restorePasswordToken = null;
-        user.password = hashedPassword;
-        this.userRepository.save(user);
     }
 
     async newPassword(newPassword: NewPassword) {

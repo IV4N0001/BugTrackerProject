@@ -1,6 +1,8 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { LegendPosition } from '@swimlane/ngx-charts';
+import { Bug } from 'src/app/interfaces/bug';
 import { Project } from 'src/app/interfaces/project';
+import { BugService } from 'src/app/services/bug.service';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
@@ -31,10 +33,13 @@ export class DashboardComponent implements AfterViewInit {
     domain: this.customColors.map(color => color.value),
   };
 
-  single: { name: string; value: number; percentage: string }[] = [];
+  project: { name: string; value: number; percentage: string }[] = [];
+  bug: { name: string; value: number; percentage: string }[] = [];
 
-  constructor(private projectService: ProjectService) {
+
+  constructor(private projectService: ProjectService, private bugService: BugService) {
     this.loadProjects();
+    this.loadBugs();
   }
 
   private loadProjects(): void {
@@ -48,7 +53,31 @@ export class DashboardComponent implements AfterViewInit {
         });
 
         const totalProjects = data.length;
-        this.single = Object.entries(categoryCounts).map(([name, count]) => ({
+        this.project = Object.entries(categoryCounts).map(([name, count]) => ({
+          name,
+          value: count,
+          percentage: ((count / totalProjects) * 100).toFixed(2)
+        }));
+      },
+      
+      (error) => {
+        console.error('Error fetching projects:', error);
+      }
+    );
+  }
+
+  private loadBugs(): void {
+    this.bugService.getBugsForUserAndCollaborations().subscribe(
+      (data: Bug[]) => {
+        const categoryCounts: { [category: string]: number } = {};
+
+        data.forEach(item => {
+          const category: string = item.state || 'UndefinedCategory';
+          categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+        });
+
+        const totalProjects = data.length;
+        this.bug = Object.entries(categoryCounts).map(([name, count]) => ({
           name,
           value: count,
           percentage: ((count / totalProjects) * 100).toFixed(2)
@@ -57,6 +86,7 @@ export class DashboardComponent implements AfterViewInit {
       (error) => {
         console.error('Error fetching projects:', error);
       }
+      
     );
   }
   
