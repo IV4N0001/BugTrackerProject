@@ -115,10 +115,10 @@
                 <option value="" disabled selected></option>
                 <option *ngFor="let collaborator of bugForm.get('selectedOptionColaborations')?.value" [value]="collaborator">{{ collaborator }}</option>
             </select>
-
+            
             <label for="image">Select Image:</label>
-            <input type="file" id="image" (change)="onFileChange($event)" formControlName="image" accept="image/*">
-
+            <!--<input type="file" id="image" (change)="onFileChange($event)" formControlName="image" accept="image/*"> --> 
+            <input type="file" (change)="onFileSelected($event)" formControlName="image" accept="image/*"/>
 
             <button type="submit" class="submit-bug-btn" [disabled]="bugForm.invalid || !bugForm.get('selectedOptionColaborations')?.value || !collaboratorsAvailable()" [ngStyle]="{'background-color': bugForm.invalid || !bugForm.get('selectedOptionColaborations')?.value || !collaboratorsAvailable() ? 'gray' : buttonColor}">Submit Bug</button>
             </form>

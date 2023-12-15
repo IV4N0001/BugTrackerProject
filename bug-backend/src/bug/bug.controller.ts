@@ -9,6 +9,8 @@ import { ChangeState } from './dto/changeStateDto';
 import { ChangePriority } from './dto/changePriorityDto';
 import { ChangeSeverity } from './dto/changeSeverityDto';
 import { AddCollaborator } from './dto/addCollaboratorDto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
 
 @Controller('bug')
 export class BugController {

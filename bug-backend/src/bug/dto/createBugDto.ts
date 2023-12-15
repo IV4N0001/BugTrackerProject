@@ -33,4 +33,12 @@ export class CreateBugDto {
 
     @IsNotEmpty()
     project: project
+
+    @IsNotEmpty()
+    @IsString()
+    image: string
+
+    @IsNotEmpty()
+    @IsString()
+    imageAnswer: string
 }

@@ -4,6 +4,7 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { BugService } from 'src/app/services/bug.service';
 import { FormsModule,FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 
 @Component({
@@ -23,9 +24,13 @@ export class BugdetailComponent implements OnInit {
   finishedAt: Date = new Date();
   BugAutor: string | undefined;
   bugCollaborator: string | undefined;
-  base64Image: string = "";
+  imageUrl: SafeUrl | null = null;
+  imageUrlAnswer: SafeUrl | null = null;
+  isImageExpanded = false;
+  idBug : number = 0;
+  imageAnswer: string = '';
 
-  constructor(private toastr: ToastrService,private route: ActivatedRoute, private router: Router, private bugService: BugService) {}
+  constructor(private sanitizer: DomSanitizer, private toastr: ToastrService,private route: ActivatedRoute, private router: Router, private bugService: BugService) {}
 
   ngOnInit(): void {
     // Suscríbete a los cambios en los parámetros de la ruta
@@ -46,8 +51,34 @@ export class BugdetailComponent implements OnInit {
     this.bugService.GetBugByName(bugName).subscribe(
       (response) => {
         console.log(response);
+        this.idBug =  response.idBug;
         this.BugAutor = response.userName;
         this.bugCollaborator = response.collaborators[0];
+        this.imageAnswer = response.imageAnswer;
+        
+        this.imageUrl = response.image;
+        this.imageUrlAnswer = response.imageAnswer;
+
+        if (this.imageUrl) {
+          // Solo si imageUrl no es nulo
+          this.bugService.getImageUrl(this.imageUrl.toString()).subscribe((blob) => {
+            const imageUrl = URL.createObjectURL(blob);
+            // Convierte la URL en un SafeUrl
+            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+            // Ahora puedes usar this.imageUrl donde se espera un SafeUrl
+          });
+        }
+
+        if (this.imageUrlAnswer) {
+          // Solo si imageUrl no es nulo
+          this.bugService.getImageUrl(this.imageUrlAnswer.toString()).subscribe((blob) => {
+            const imageUrl = URL.createObjectURL(blob);
+            // Convierte la URL en un SafeUrl
+            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+            // Ahora puedes usar this.imageUrl donde se espera un SafeUrl
+          });
+        }
+        
         // Manejar la respuesta aquí, por ejemplo, asignarla a la propiedad bugs
         this.bugs = response;
       },
@@ -57,6 +88,7 @@ export class BugdetailComponent implements OnInit {
       }
     );
   }
+
 
   submitFormChangeAll(id: number){
     console.log(this.name);
@@ -108,6 +140,14 @@ export class BugdetailComponent implements OnInit {
           // Maneja el error de acuerdo a tus necesidades
         }
       );
+      this.bugService.changedImgAnswer(id, this.imageAnswer).subscribe(
+        Response => {
+          this.toastr.success('Image changed Successfully');
+        },
+        error => {
+          this.toastr.error('Error');
+        }
+      );
     } else {
       // Si no son iguales, mostrar un mensaje de error
       this.toastr.error('This bug is not assigned to you');
@@ -134,6 +174,24 @@ export class BugdetailComponent implements OnInit {
       // Si no son iguales, mostrar un mensaje de error
       this.toastr.error('You do not have permissions to delete bug');
     }
-
   }
+  toggleImageSize(): void {
+    this.isImageExpanded = !this.isImageExpanded;
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    console.log(this.imageAnswer);
+    if (file) {
+      this.bugService.uploadFile(file).subscribe(
+        response => {
+          console.log(response.msg);
+        },
+        error => {
+          console.error('Error al subir el archivo:', error);
+        }
+      );
+    }
+  }
+
 }

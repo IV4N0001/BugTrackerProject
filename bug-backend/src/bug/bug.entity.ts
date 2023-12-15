@@ -51,14 +51,14 @@ export class bug {
     @Column()
     ProjectName: string
     
-    @Column({ type: 'mediumblob', nullable: true }) // Cambio aquí
-    image: Buffer;
+    @Column({ nullable: true }) // Cambio aquí
+    image: String;
 
     @Column({nullable: true})
     Answer: string | null;
 
-    @Column({ type: 'mediumblob', nullable: true }) // Cambio aquí
-    imageAnswer: Buffer;
+    @Column({ nullable: true }) // Cambio aquí
+    imageAnswer: string;
 
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date

@@ -37,4 +37,8 @@ export class UpdateBugDto {
     @IsNotEmpty()
     @IsString()
     Answer?: string
+
+    @IsNotEmpty()
+    @IsString()
+    imageAnswer?: string
 }

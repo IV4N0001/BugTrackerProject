@@ -12,6 +12,9 @@ import { ChangeSeverity } from './dto/changeSeverityDto';
 import { AddCollaborator } from './dto/addCollaboratorDto';
 import { UserService } from 'src/user/user.service';
 import { user } from 'src/user/user.entity';
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
 
 @Injectable()
 export class BugService {

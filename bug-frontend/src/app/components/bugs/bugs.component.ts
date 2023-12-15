@@ -10,7 +10,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Notification } from 'src/app/interfaces/notification';
 import { FileService } from 'src/app/services/file.service';
 
-
 @Component({
   selector: 'app-bugs',
   templateUrl: './bugs.component.html',
@@ -31,7 +30,7 @@ export class BugsComponent implements OnInit {
   pageSize = 10;     // Tamaño de la página
   currentPage = 1;   // Página actual
 
-  constructor(fileService: FileService, private toastr: ToastrService, private route: Router, private bugService: BugService, private notificationService: NotificationService, private projectService: ProjectService, private fb: FormBuilder,private http: HttpClient) {
+  constructor(fileService: FileService, private router: Router, private toastr: ToastrService, private route: Router, private bugService: BugService, private notificationService: NotificationService, private projectService: ProjectService, private fb: FormBuilder,private http: HttpClient) {
     this.archivos = [];
     this.bugForm = this.fb.group({
       name: ['', Validators.required],
@@ -45,6 +44,21 @@ export class BugsComponent implements OnInit {
       selectedOptionColaborations: [''],
       image: [null]
     });
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.bugService.uploadFile(file).subscribe(
+        response => {
+          console.log(response.msg);
+        },
+        error => {
+          console.error('Error al subir el archivo:', error);
+        }
+      );
+    }
   }
 
   navigateToBugDetails(bugName: string) {
@@ -304,6 +318,9 @@ export class BugsComponent implements OnInit {
   submitBugForm() {
 
     const userName = localStorage.getItem('userName');
+    const fileName = this.bugForm.get('image')?.value;
+    const pureFileName = fileName.split('\\').pop();
+    console.log(pureFileName);
     const bugData = {
       name: this.bugForm.get('name')?.value,
       summary: this.bugForm.get('summary')?.value,
@@ -314,7 +331,7 @@ export class BugsComponent implements OnInit {
       finishedAt: this.bugForm.get('expectedCompletionAt')?.value,
       ProjectName: this.bugForm.get('selectedOptionProjectName')?.value,
       collaborators: this.bugForm.get('selectedOptionColaborations')?.value,
-      image: this.bugForm.get('image')?.value,  // Agregar directamente el archivo al objeto
+      image: pureFileName,  // Agregar directamente el archivo al objeto
       userName: userName,
     };
     // Agrega el archivo directamente al FormData
@@ -326,7 +343,7 @@ export class BugsComponent implements OnInit {
         console.log(response);
         this.bugs.push(response);
         this.closeBugForm();
-        this.loadBugs();
+        this.router.navigate(['/bugs']);
         this.toastr.success('Bug created successfully', 'Bug created');
 
         const notification: Notification = {
@@ -345,6 +362,8 @@ export class BugsComponent implements OnInit {
       }
     );
   }
+  
+  
 
   //Paginar bugs//
   
